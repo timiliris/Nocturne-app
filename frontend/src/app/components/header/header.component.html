@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      @if(!showBackButton){
+        <ion-menu-button color="primary" auto-hide="false"></ion-menu-button>
+      }
+      @if(showBackButton){
+        <ion-back-button color="primary" defaultHref="/"></ion-back-button>
+      }
+    </ion-buttons>
+    <ion-title color="medium" class="ion-text-center">{{title}}</ion-title>
+    @if(numberOfSongs){
+      <ion-card-subtitle class="ion-text-center">({{numberOfSongs}} tracks)</ion-card-subtitle>
+    }
+
+  </ion-toolbar>
+</ion-header>

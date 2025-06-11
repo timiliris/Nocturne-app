@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Nocturne YouTube Downloader",
+  "version": "1.0",
+  "description": "Download music from YouTube videos directly on the page",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/watch*"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "permissions": ["downloads", "activeTab", "scripting", "storage"],
+  "host_permissions": ["<all_urls>"]
+}

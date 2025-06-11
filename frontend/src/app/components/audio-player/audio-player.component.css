@@ -1,0 +1,335 @@
+/* audio-player.component.css - Version compacte */
+
+.compact-audio-player {
+  background: linear-gradient(135deg, rgba(var(--ion-color-dark-rgb), 0.56) 0%, rgba(var(--ion-color-dark-rgb), 0.80) 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: var(--ion-color-light);
+  margin: 8px;
+  padding: 12px;
+}
+
+.thumbnail-card {
+  border-radius: 12px;
+  margin: 0;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.thumbnail-card ion-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.main-content {
+  padding-left: 12px;
+}
+
+.compact-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+}
+
+.info-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  min-height: 32px;
+}
+
+.controls-row-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 36px;
+}
+
+.bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 24px;
+}
+
+.track-info-compact {
+  flex: 1;
+  min-width: 0;
+}
+
+.track-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ion-color-light);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+  margin-bottom: 2px;
+}
+
+.track-artist {
+  font-size: 12px;
+  color: var(--ion-color-medium-shade);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.time-display {
+  font-size: 11px;
+  color: #b3b3b3;
+  font-weight: 500;
+  min-width: 70px;
+  text-align: left;
+}
+
+.time-display-going {
+  color: var(--ion-color-medium);
+}
+
+.progress-section-compact {
+  margin: 4px 0;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(125, 121, 121, 0.44);
+  border-radius: 8px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: rgba(var(--ion-color-primary-rgb), 0.66);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  border-radius: 50%;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 8px rgba(var(--ion-color-primary-rgb), 0.66);
+  animation: ledPulseGreen 1.5s infinite;
+}
+
+.progress-bar::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(var(--ion-color-primary-rgb), 0.8);
+}
+
+.controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 36px;
+}
+
+.control-buttons-compact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-btn-small {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+}
+
+.control-btn-small:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+.play-btn-compact {
+  background: rgba(211, 148, 239, 0.15);
+  border: 1px solid rgba(var(--ion-color-primary-rgb), 0.5);
+  color: #ffffff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 8px rgba(var(--ion-color-primary-rgb), 0.3);
+}
+
+.play-btn-compact:hover {
+  background: rgba(var(--ion-color-primary-rgb), 0.3);
+  border: 1px solid rgba(var(--ion-color-primary-rgb), 0.8);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(var(--ion-color-primary-rgb), 0.4);
+}
+
+.volume-section-compact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.volume-btn-compact {
+  background: rgba(var(--ion-color-tertiary-rgb), 0.1);
+  border: none;
+  color: rgba(var(--ion-color-tertiary-rgb), 0.6);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  backdrop-filter: blur(10px);
+  animation: ledPulseGreen 3s infinite;
+}
+
+.volume-btn-compact:hover {
+  color: rgba(var(--ion-color-tertiary-rgb), 0.8);
+  background: rgba(var(--ion-color-tertiary-rgb), 0.15);
+}
+
+.volume-btn-compact.muted {
+  background: rgba(var(--ion-color-danger-rgb), 0.1);
+  color: rgba(var(--ion-color-danger-rgb), 0.6);
+  animation: ledPulseRed 3s infinite;
+}
+
+.volume-slider-compact {
+  width: 80px;
+  height: 3px;
+  background: rgba(var(--ion-color-tertiary-rgb), 0.6);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.volume-slider-compact::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background: rgba(var(--ion-color-tertiary-rgb), 1);
+  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.volume-slider-compact::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Animations */
+@keyframes ledPulseRed {
+  0%, 100% {
+    box-shadow: 0 0 1px rgba(var(--ion-color-danger-rgb), 0.6), 0 0 2px rgba(var(--ion-color-danger-rgb), 0.6);
+  }
+  50% {
+    box-shadow: 0 0 2px rgba(var(--ion-color-danger-rgb), 0.6), 0 0 4px rgba(var(--ion-color-danger-rgb), 0.6);
+  }
+}
+
+@keyframes ledPulseGreen {
+  0%, 100% {
+    box-shadow: 0 0 1px rgba(var(--ion-color-tertiary-rgb), 0.6), 0 0 2px rgba(var(--ion-color-tertiary-rgb), 0.6);
+  }
+  50% {
+    box-shadow: 0 0 2px rgba(var(--ion-color-tertiary-rgb), 0.6), 0 0 4px rgba(var(--ion-color-tertiary-rgb), 0.6);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.compact-audio-player.playing .play-btn-compact {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .compact-audio-player {
+    padding: 10px;
+    margin: 4px;
+  }
+
+  .thumbnail-card {
+    width: 40px;
+    height: 40px;
+  }
+
+  .main-content {
+    padding-left: 8px;
+  }
+
+  .compact-layout {
+    gap: 6px;
+  }
+
+  .control-buttons-compact {
+    gap: 6px;
+  }
+
+  .volume-slider-compact {
+    width: 60px;
+  }
+
+  .track-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    font-size: 14px;
+  }
+
+  .track-artist {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    font-size: 11px;
+  }
+
+  .time-display {
+    font-size: 10px;
+    min-width: 60px;
+  }
+}
+.truncate {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

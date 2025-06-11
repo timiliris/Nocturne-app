@@ -1,0 +1,15 @@
+<ion-text (click)="openSelector()">
+  <ion-icon name="disc-outline" ></ion-icon>
+  <ion-select
+    *ngIf="isSelectorOpen"
+    placeholder="Choisir une playlist"
+    [interfaceOptions]="{ header: 'Sélectionner une playlist' }"
+    (ionChange)="onPlaylistChange($event)"
+    [value]="selectedPlaylistId"
+  >
+    <ion-select-option *ngFor="let playlist of playlistService.playlists" [value]="playlist.id">
+      {{ playlist.name }}
+    </ion-select-option>
+  </ion-select>
+
+</ion-text>

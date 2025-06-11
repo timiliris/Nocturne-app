@@ -1,0 +1,107 @@
+/* Download button styles */
+
+:root{
+    --bg-color: #24273a;
+    --title-color: #c6a0f6;
+    --text-color: #cad3f5;
+    --subtext-color-1: #b8c0e0;
+    --subtext-color-2: #a5adcb;
+    --subtext-color-3: #5b6078;
+    --success-color: #a6e3a1;
+    --error-color: #ed8796;
+    --button-bg: #91d7e3;
+    --button-bg-2: #52e2ff;
+}
+
+.nocturne-download-button {
+    background: var(--button-bg);
+    color: var(--subtext-color-3);
+    border: none;
+    border-radius: 18px;
+    font-size: 14px;
+    font-weight: 500;
+    max-width: fit-content;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    font-family: "Roboto", sans-serif;
+}
+
+.nocturne-download-button:hover {
+    background: #1565c0;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+}
+
+.nocturne-download-button:active {
+    transform: translateY(0);
+}
+
+.nocturne-download-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.nocturne-download-button svg {
+    flex-shrink: 0;
+}
+
+/* Notification styles */
+.nocturne-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: var(--subtext-color-3);
+    font-weight: 500;
+    font-size: 14px;
+    z-index: 10000;
+    max-width: fit-content;
+    word-wrap: break-word;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.3s ease;
+    font-family: "Roboto", sans-serif;
+}
+
+.nocturne-success {
+    background: var(--success-color);
+}
+
+.nocturne-error {
+    background: var(--error-color);
+}
+
+.nocturne-info {
+    background: var(--title-color);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+    .nocturne-download-button {
+        background: var(--button-bg);
+    }
+
+    .nocturne-download-button:hover {
+        background: var(--button-bg-2);
+    }
+}
+
+/* YouTube-specific integration */
+#nocturne-download-btn {
+    height: 36px;
+    min-width: 140px;
+}

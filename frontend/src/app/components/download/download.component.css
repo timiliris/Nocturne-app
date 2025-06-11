@@ -1,0 +1,40 @@
+.preview-card {
+  margin-top: 16px;
+  border: 1px solid var(--ion-color-primary);
+}
+
+.video-stats {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.video-stats ion-chip {
+  --background: rgba(var(--ion-color-primary-rgb), 0.1);
+  font-size: 0.8em;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+ion-thumbnail img {
+  border-radius: 8px;
+}
+
+.ion-margin-start {
+  margin-left: 8px;
+}
+
+@media (max-width: 768px) {
+  .video-stats {
+    flex-direction: column;
+  }
+
+  .video-stats ion-chip {
+    align-self: flex-start;
+  }
+}

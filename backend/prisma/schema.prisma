@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+}
+
+model Playlist {
+  id        String         @id @default(uuid())
+  name      String
+  color     String @default("#000000")
+  createdAt DateTime       @default(now())
+  songs     PlaylistSong[]
+}
+
+model PlaylistSong {
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+  playlistId String
+
+  song   Song   @relation(fields: [songId], references: [id])
+  songId String
+
+  @@id([playlistId, songId])
+}
+
+model Song {
+  id          String         @id @default(uuid())
+  title       String
+  artist      String
+  filePath    String
+  youtubeUrl  String
+  thumbnail   String?
+  description String?
+  duration    Int?
+  views       Int?           @default(0)
+  createdAt   DateTime       @default(now())
+  playlists   PlaylistSong[]
+}

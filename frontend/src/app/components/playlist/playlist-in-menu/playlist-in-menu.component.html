@@ -1,0 +1,76 @@
+
+<ion-card-title color="tertiary" class="ion-margin"><ion-icon name="file-tray-stacked"></ion-icon>   PLAYLIST</ion-card-title>
+
+  <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
+
+<ion-list *ngIf="!isLoading && playlistService.playlists.length > 0">
+  <ion-item-sliding *ngFor="let playlist of playlistService.playlists">
+    <ion-item-options>
+      <ion-item-option color="danger" (click)="playlistService.deletePlaylist(playlist.id)">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+    <ion-item lines="none" (click)="playlistService.goToPlaylist(playlist.id)">
+      <ion-chip
+        style="width: 100%"
+        [style.background-color]="getRgbaColor(playlist.color, 0.15)"
+        [style.border]="getBorderStyle(playlist.color, 0.5)"
+        color="light"
+      >
+        <ion-label [style.color]="getRgbaColor(playlist.color, 1)" > <b> {{ playlist.name }} </b> </ion-label>
+        <ion-badge
+          style="position: absolute; right: 0; margin-right: 10px;"
+          [style.background-color]="getRgbaColor(playlist.color, 0.5)"
+          [style.border]="getBorderStyle(playlist.color, 1)">
+          {{playlist.songs.length}}
+        </ion-badge>
+      </ion-chip>
+    </ion-item>
+  </ion-item-sliding>
+
+</ion-list>
+
+
+  <ion-text *ngIf="!isLoading && playlistService.playlists.length === 0" color="medium">
+    Aucune playlist enregistrée.
+  </ion-text>
+
+@if(!playlistService.isAddPlaylist){
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button size="small" fill="outline" expand="block" color="primary" (click)="playlistService.toggleAddPlaylist()">
+          <ion-icon name="add-outline"></ion-icon>
+          ADD PLAYLIST
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+}
+@else{
+  <form [formGroup]="playlistService.form" (ngSubmit)="playlistService.addPlaylist()">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item lines="none">
+            <ion-input label="name" label-placement="stacked" formControlName="name" type="text"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12">
+          <ion-item lines="none">
+            <ion-label position="stacked">Color: {{ playlistService.form.get('color')?.value }}</ion-label>
+            <ion-input type="color" formControlName="color"></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="12">
+          <ion-button fill="outline" expand="block" color="success" type="submit" [disabled]="playlistService.form.invalid">ADD</ion-button>
+        </ion-col>
+        <ion-col size="12">
+          <ion-button fill="outline" expand="block" color="danger" type="submit" (click)="playlistService.toggleAddPlaylist()">CANCEL</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+}
+

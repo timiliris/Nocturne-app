@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+
+        :root{
+            --bg-color: #24273a;
+            --title-color: #c6a0f6;
+            --text-color: #cad3f5;
+            --subtext-color-1: #b8c0e0;
+            --subtext-color-2: #a5adcb;
+            --subtext-color-3: #5b6078;
+            --success-color: #a6e3a1;
+            --error-color: #ed8796;
+            --button-bg: #91d7e3;
+            --button-bg-2: #52e2ff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 16px;
+            width: 280px;
+            margin: 0;
+            background: var(--bg-color);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .header h3 {
+            margin: 0 0 4px 0;
+            color: var(--title-color);
+            font-size: 18px;
+        }
+        .header p {
+            margin: 0;
+            color: var(--text-color);
+            font-size: 14px;
+        }
+
+        .info-box {
+            background: var(--bg-color);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .info-box h4 {
+            margin: 0 0 8px 0;
+            color: var(--subtext-color-1);
+            font-size: 14px;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--subtext-color-2);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .primary-btn {
+            background: var(--button-bg);
+            color: var(--subtext-color-3);
+        }
+
+        .primary-btn:hover {
+            background: var(--button-bg-2);
+        }
+
+        .secondary-btn {
+            background: var(--success-color);
+            color: #333;
+        }
+
+        .secondary-btn:hover {
+            background: #d0d0d0;
+        }
+
+        .status {
+            text-align: center;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .status.success {
+            background: var(--success-color);
+            color: var(--subtext-color-3);
+        }
+
+        .status.error {
+            background: var(--error-color);
+            color: var(--subtext-color-3);
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h3>Nocturne Downloader</h3>
+    <p>YouTube to MP3 Converter</p>
+</div>
+
+<div class="info-box">
+    <h4>How to use:</h4>
+    <p>1. Go to any YouTube video<br>
+        2. Click the "Download MP3" button that appears<br>
+        3. Login if required<br>
+        4. Your MP3 will be downloaded!</p>
+</div>
+
+<div class="info-box">
+    <h4>Quick Actions:</h4>
+    <div class="button-container">
+        <button id="download" class="primary-btn">Download Current</button>
+        <button id="status" class="secondary-btn">Check Status</button>
+    </div>
+</div>
+
+<div id="status-message" class="status" style="display: none;"></div>
+
+<script src="popup.js" type="module"></script>
+</body>
+</html>

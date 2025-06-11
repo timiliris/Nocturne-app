@@ -1,0 +1,55 @@
+<ion-app>
+  <ion-split-pane contentId="main-content" style="--side-max-width: 10%" >
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-content>    <ion-list id="inbox-list">
+        <ion-card-title class="ion-margin" color="primary"> <b> NOCTURNE </b>🌛</ion-card-title>
+        @if(authService.isAuthenticated$ | async){
+
+
+            @for (p of appPages; track p; let i = $index) {
+              <ion-menu-toggle auto-hide="false">
+                <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+                  <ion-chip [style.border]="'1px solid var(--ion-color-primary)'" style="width: 100%" color="primary" >
+                    <ion-icon color="primary"  aria-hidden="true"  [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'">
+
+                    </ion-icon>
+                    <b> {{ p.title }}</b>
+                    @if(p.title === 'Library') {
+                      <ion-badge style="position: absolute; right: 5px"  color="primary" class="ion-margin-end">
+                        {{ libraryService.songs.length }}
+                      </ion-badge>
+                    }
+                  </ion-chip>
+                </ion-item>
+              </ion-menu-toggle>
+            }
+
+          <app-playlist-in-menu></app-playlist-in-menu>
+          <ion-item routerDirection="root" (click)="onLogout()" lines="none" detail="false" routerLinkActive="selected">
+            <ion-chip [style.border]="'1px solid var(--ion-color-primary)'" style="width: 100%" color="primary" >
+              <ion-icon color="primary"  aria-hidden="true"  ios="cloudy-night-outline" md="cloudy-night-sharp">
+              </ion-icon>
+              <b> Logout </b>
+            </ion-chip>
+          </ion-item>
+        }
+        @else{
+          <ion-item routerDirection="root" [routerLink]="['/auth']" lines="none" detail="false" routerLinkActive="selected">
+            <ion-chip [style.border]="'1px solid var(--ion-color-primary)'" style="width: 100%" color="primary" >
+              <ion-icon color="primary"  aria-hidden="true"  ios="cloudy-night-outline" md="cloudy-night-sharp">
+              </ion-icon>
+              <b> Login </b>
+            </ion-chip>
+          </ion-item>
+        }
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+
+      <ion-router-outlet id="main-content"></ion-router-outlet>
+      <div class="audio-player">
+        <app-audio-player></app-audio-player>
+      </div>
+
+  </ion-split-pane>
+</ion-app>

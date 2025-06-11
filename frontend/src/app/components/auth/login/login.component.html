@@ -1,0 +1,18 @@
+<ion-grid>
+  <ion-row class="ion-justify-content-center ion-align-items-center" style="height: 60vh;">
+    <ion-col size-xs="12" size-sm="6" size-md="4" size-lg="3" size-xl="2" class="ion-text-center">
+      <h1>Login</h1>
+      <ion-card-subtitle>
+        {{SessionMessage}}
+      </ion-card-subtitle>
+      <ion-input type="text" label-placement="stacked" label="username" [(ngModel)]="username" ></ion-input>
+      <ion-input type="password" label-placement="stacked" label="password" [(ngModel)]="password" ></ion-input>
+
+      @if(AuthServices.isAuthenticated$ | async) {
+        <ion-button expand="block" color="danger" (click)="onLogout()">Logout</ion-button>
+      } @else {
+        <ion-button expand="block" color="primary" (click)="onLogin()">Login</ion-button>
+      }
+    </ion-col>
+  </ion-row>
+</ion-grid>

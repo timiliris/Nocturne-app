@@ -1,0 +1,12 @@
+:root{
+  --ion-item-background: rgba(255, 0, 0, 0)!important;
+}
+ion-list{
+  --background: rgba(255, 0, 0, 0)!important;
+}
+ion-item {
+  cursor: pointer
+}
+ion-item:hover{
+  --background: rgba(227, 221, 221, 0.10) !important;
+}
