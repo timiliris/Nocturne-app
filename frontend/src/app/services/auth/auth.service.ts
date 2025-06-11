@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, tap } from 'rxjs';
 import {environment} from "../../../environments/environment.prod";
 import {Router} from "@angular/router";
-import * as process from "node:process";
 
 @Injectable({
   providedIn: 'root'
