@@ -2,6 +2,7 @@ const { Router } = require("express");
 const prisma = require("../../prisma/prismaClient");
 
 const router = Router();
+
 function bigIntToString(obj) {
     if (Array.isArray(obj)) {
         return obj.map(bigIntToString);
@@ -49,7 +50,7 @@ router.get("/:id", async (req, res) => {
             },
         });
         if (!playlist) return res.status(404).json({ error: "Playlist non trouvée" });
-        res.json(bigIntToString(playlists));
+        res.json(bigIntToString(playlist));
     } catch (error) {
         res.status(500).json({ error: "Erreur lors de la récupération de la playlist" });
     }
@@ -133,6 +134,7 @@ router.delete("/:id", async (req, res) => {
         res.status(500).json({ error: "Erreur lors de la suppression de la playlist" });
     }
 });
+
 // POST /api/playlists/:id/songs - Ajouter un son dans une playlist
 router.post("/:id/songs", async (req, res) => {
     const { songId } = req.body; // ✅ on prend songId depuis le body
@@ -149,7 +151,7 @@ router.post("/:id/songs", async (req, res) => {
                 song: { connect: { id: songId } },
             },
         });
-        res.status(201).json(newLink);
+        res.status(201).json(bigIntToString(newLink));
     } catch (error) {
         console.error("Erreur lors de l'ajout du son :", error);
         res.status(400).json({ error: "Erreur lors de l'ajout du son à la playlist" });
