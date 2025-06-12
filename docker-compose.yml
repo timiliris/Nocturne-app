@@ -33,6 +33,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
+      - ./cookies.txt:/app/cookies.txt
       - ./backend:/app
     depends_on:
       - db

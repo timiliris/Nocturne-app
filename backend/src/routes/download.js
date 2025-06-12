@@ -16,7 +16,7 @@ function sanitizeBigInt(obj) {
 function runYtDlpInfo(url, useTor = false) {
     const proxy = useTor ? '--proxy socks5h://tor:9050' : '';
     return new Promise((resolve, reject) => {
-        exec(`yt-dlp ${proxy} -j ${url}`, (err, stdout, stderr) => {
+        exec(`yt-dlp --cookies /app/cookies.txt ${proxy} -j ${url}`, (err, stdout, stderr) => {
             if (err) return reject({ err, stderr });
             try {
                 const info = JSON.parse(stdout);
@@ -31,7 +31,7 @@ function runYtDlpInfo(url, useTor = false) {
 function downloadAudio(url, filePath, useTor = false) {
     const proxy = useTor ? '--proxy socks5h://tor:9050' : '';
     return new Promise((resolve, reject) => {
-        const cmd = `yt-dlp ${proxy} -f bestaudio --extract-audio --audio-format mp3 -o "${filePath}" ${url}`;
+        const cmd = `yt-dlp --cookies /app/cookies.txt ${proxy} -f bestaudio --extract-audio --audio-format mp3 -o "${filePath}" ${url}`;
         exec(cmd, (err, stdout, stderr) => {
             if (err) return reject({ err, stderr });
             resolve();
