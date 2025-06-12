@@ -89,11 +89,11 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   }
 
   nextTrack() {
-    this.audioService.nextTrack();
+    this.audioService.playNext();
   }
 
   previousTrack() {
-    this.audioService.previousTrack();
+    this.audioService.playPrevious();
   }
 
   stop() {

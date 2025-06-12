@@ -1,4 +1,4 @@
-FROM node:18-bullseye
+FROM node:20-bullseye
 
 # Installer Python, pip, yt-dlp, ffmpeg, netcat
 RUN apt-get update && apt-get install -y \
@@ -44,5 +44,6 @@ CMD sh -c '\
   echo "🚀 Running migrations..." && \
   npx prisma migrate deploy && \
   echo "🟢 Starting server..." && \
+  npm install --legacy-peer-deps && \
   node src/server.js'
 

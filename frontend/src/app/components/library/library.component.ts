@@ -5,7 +5,7 @@ import {track} from "../../types/track.interface";
 import {Component, inject, OnInit} from "@angular/core";
 import {ApiService} from "../../services/api.service";
 import {IonItemOption, IonItemOptions, IonItemSliding} from "@ionic/angular/standalone";
-import {IonButton, IonIcon, IonImg, IonItem, IonLabel, IonList, IonText, IonThumbnail} from "@ionic/angular/standalone";
+import { IonIcon, IonImg, IonItem, IonLabel, IonList, IonText, IonThumbnail} from "@ionic/angular/standalone";
 import {NgForOf, NgIf} from "@angular/common";
 import {AddInPlaylistComponent} from "../playlist/add-in-playlist/add-in-playlist.component";
 import {LibraryService} from "../../services/library/library.service";
@@ -20,7 +20,6 @@ import {LibraryService} from "../../services/library/library.service";
     IonThumbnail,
     IonIcon,
     IonLabel,
-    IonButton,
     IonText,
     IonImg,
     IonItemSliding,

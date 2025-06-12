@@ -4,15 +4,21 @@ const fs = require("fs");
 const path = require("path");
 
 const router = Router();
-
+function sanitizeBigInt(obj) {
+    return JSON.parse(JSON.stringify(obj, (key, value) =>
+        typeof value === "bigint" ? Number(value) : value
+    ));
+}
 // GET /api/songs - Lire toutes les chansons
 router.get("/", async (req, res) => {
     try {
         const songs = await prisma.song.findMany({
             orderBy: { createdAt: "desc" },
         });
-        res.json(songs);
+
+        res.json(sanitizeBigInt(songs)); // 👈 correction ici
     } catch (error) {
+        console.error("Erreur GET /api/songs:", error);
         res.status(500).json({ error: "Erreur lors de la récupération des chansons" });
     }
 });

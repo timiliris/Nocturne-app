@@ -1,15 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ApiService } from '../api.service';
-import { track } from "../../types/track.interface";
-import {environment} from "../../../environments/environment.prod";
-
-export interface AudioTrack {
-  src: string;
-  title?: string;
-  artist?: string;
-  thumbnail?: string;
-}
+import { track } from '../../types/track.interface';
+import { environment } from '../../../environments/environment.prod';
 
 export interface Playlist {
   songs: { song: track }[];
@@ -17,11 +10,11 @@ export interface Playlist {
 
 @Injectable({ providedIn: 'root' })
 export class AudioPlayerService {
-  api = inject(ApiService);
-  apiUrl = environment.apiUrl ;
+  private api = inject(ApiService);
+  private apiUrl = environment.apiUrl;
   private audio = new Audio();
 
-  // BehaviorSubjects pour l'état
+  // Subjects (état interne)
   private currentTrack$ = new BehaviorSubject<Partial<track> | null>(null);
   private isPlaying$ = new BehaviorSubject<boolean>(false);
   private duration$ = new BehaviorSubject<number>(0);
@@ -31,11 +24,9 @@ export class AudioPlayerService {
   private playlist$ = new BehaviorSubject<track[]>([]);
   private currentIndex$ = new BehaviorSubject<number>(-1);
 
-  // Propriétés publiques
-  tracks: track[] = [];
   private previousVolume = 1;
 
-  // Observables publics
+  // Observables exposés
   currentTrack = this.currentTrack$.asObservable();
   isPlaying = this.isPlaying$.asObservable();
   duration = this.duration$.asObservable();
@@ -44,6 +35,8 @@ export class AudioPlayerService {
   isMuted = this.isMuted$.asObservable();
   playlist = this.playlist$.asObservable();
   currentIndex = this.currentIndex$.asObservable();
+
+  tracks: track[] = [];
 
   constructor() {
     this.setupAudioEvents();
@@ -55,6 +48,14 @@ export class AudioPlayerService {
     this.audio.ontimeupdate = () => {
       this.currentTime$.next(this.audio.currentTime);
       this.duration$.next(this.audio.duration || 0);
+
+      if ('mediaSession' in navigator && navigator.mediaSession.setPositionState) {
+        navigator.mediaSession.setPositionState({
+          duration: this.audio.duration,
+          playbackRate: this.audio.playbackRate,
+          position: this.audio.currentTime,
+        });
+      }
     };
     this.audio.onended = () => {
       this.isPlaying$.next(false);
@@ -68,7 +69,6 @@ export class AudioPlayerService {
 
   init() {
     this.loadTracks();
-    // Initialisation du volume
     this.audio.volume = this.volume$.value;
   }
 
@@ -76,12 +76,12 @@ export class AudioPlayerService {
     this.api.getSongs().subscribe({
       next: (tracks: track[]) => {
         this.tracks = tracks;
-        if (this.tracks.length > 0) {
+        if (tracks.length > 0) {
           this.currentIndex$.next(0);
           this.playCurrent();
         }
       },
-      error: err => console.error(err)
+      error: err => console.error('Erreur chargement des morceaux :', err)
     });
   }
 
@@ -93,116 +93,75 @@ export class AudioPlayerService {
       this.play(tracks[0]);
     }
   }
+
   setCurrentTrackIndex(index: number) {
     if (index >= 0 && index < this.tracks.length) {
       this.currentIndex$.next(index);
-      this.currentIndex = this.currentIndex$.asObservable(); // si nécessaire
     }
   }
+
   play(track: Partial<track>) {
+    if (!track || !track.filePath) return;
 
-    const src = this.apiUrl + track.filePath
-
+    const src = this.apiUrl + track.filePath;
     if (this.audio.src !== src) {
-      this.audio.src = src || "";
+      this.audio.src = src;
     }
-    console.log('Playing track:', track);
-    this.audio.play().catch((err) => console.error('Erreur lecture audio:', err));
 
-    // Mise à jour du track actuel avec les bonnes URLs
-    const updatedTrack = {
+    const updatedTrack: Partial<track> = {
       ...track,
-      thumbnail: track.thumbnail ? this.apiUrl + track.thumbnail : undefined
+      thumbnail: track.thumbnail ? this.apiUrl + track.thumbnail : undefined,
     };
 
     this.currentTrack$.next(updatedTrack);
-
-    console.log(this.currentTrack$.value);
+    this.setupMediaSession(updatedTrack);
+    this.audio.play().catch(err => console.error('Erreur de lecture audio :', err));
   }
 
   playCurrent() {
-    const track = this.tracks[this.currentIndex$.value];
-    if (track) this.play(track);
+    const currentPlaylist = this.playlist$.value;
+    const index = this.currentIndex$.value;
+
+    if (currentPlaylist.length > 0) {
+      this.play(currentPlaylist[index]);
+    } else if (this.tracks.length > 0 && index >= 0) {
+      this.play(this.tracks[index]);
+    }
   }
 
   playNext() {
     const currentPlaylist = this.playlist$.value;
-    const currentIdx = this.currentIndex$.value;
+    const currentIndex = this.currentIndex$.value;
 
-    if (currentPlaylist.length > 0) {
-      const nextIndex = currentIdx + 1;
-      if (nextIndex < currentPlaylist.length) {
-        this.currentIndex$.next(nextIndex);
-        this.play(currentPlaylist[nextIndex]);
-        return;
-      }
-    }
+    const list = currentPlaylist.length > 0 ? currentPlaylist : this.tracks;
+    const nextIndex = currentIndex + 1;
 
-    // Fallback vers la logique originale
-    if (this.currentIndex$.value < this.tracks.length - 1) {
-      const newIndex = this.currentIndex$.value + 1;
-      this.currentIndex$.next(newIndex);
-      this.playCurrent();
+    if (nextIndex < list.length) {
+      this.currentIndex$.next(nextIndex);
+      this.play(list[nextIndex]);
     } else {
-      this.stop();
+      this.stop(); // fin de playlist
     }
   }
 
   playPrevious() {
     const currentPlaylist = this.playlist$.value;
-    const currentIdx = this.currentIndex$.value;
+    const currentIndex = this.currentIndex$.value;
 
-    if (currentPlaylist.length > 0) {
-      const prevIndex = currentIdx - 1;
-      if (prevIndex >= 0) {
-        this.currentIndex$.next(prevIndex);
-        this.play(currentPlaylist[prevIndex]);
-        return;
-      }
+    const list = currentPlaylist.length > 0 ? currentPlaylist : this.tracks;
+    const prevIndex = currentIndex - 1;
+
+    if (prevIndex >= 0) {
+      this.currentIndex$.next(prevIndex);
+      this.play(list[prevIndex]);
     }
-
-    // Fallback vers la logique originale
-    if (this.currentIndex$.value > 0) {
-      const newIndex = this.currentIndex$.value - 1;
-      this.currentIndex$.next(newIndex);
-      this.playCurrent();
-    }
-  }
-
-  nextTrack() {
-    this.playNext();
-  }
-
-  previousTrack() {
-    this.playPrevious();
   }
 
   togglePlay() {
     if (this.isPlaying$.value) {
       this.pause();
     } else {
-      const currentPlaylist = this.playlist$.value;
-      const currentIdx = this.currentIndex$.value;
-      const currentTrackData = this.currentTrack$.value;
-
-      if (currentPlaylist.length > 0 && currentIdx >= 0) {
-        this.play(currentPlaylist[currentIdx]);
-      } else if (currentTrackData?.src) {
-        const track: track = {
-          src: currentTrackData.src,
-          title: currentTrackData.title || 'Unknown Title',
-          artist: currentTrackData.artist || 'Unknown Artist',
-          thumbnail: currentTrackData.thumbnail || '',
-          youtubeUrl: currentTrackData.youtubeUrl || '',
-          filePath: currentTrackData.filePath || '',
-          id: currentTrackData.id || '',
-          duration: this.duration$.value,
-          views: 0,
-          description: '',
-          createdAt: new Date()
-        };
-        this.play(track);
-      }
+      this.playCurrent();
     }
   }
 
@@ -217,14 +176,13 @@ export class AudioPlayerService {
     this.isPlaying$.next(false);
   }
 
-  seek(time: number) {
-    this.audio.currentTime = time;
+  seek(seconds: number) {
+    this.audio.currentTime = Math.max(0, Math.min(seconds, this.duration$.value));
   }
 
   setVolume(volume: number) {
     this.audio.volume = volume;
     this.volume$.next(volume);
-
     if (volume > 0 && this.isMuted$.value) {
       this.audio.muted = false;
       this.isMuted$.next(false);
@@ -237,24 +195,60 @@ export class AudioPlayerService {
       this.audio.volume = this.previousVolume;
       this.volume$.next(this.previousVolume);
     } else {
-      this.previousVolume = this.volume$.value;
+      this.previousVolume = this.audio.volume;
       this.audio.muted = true;
       this.volume$.next(0);
     }
     this.isMuted$.next(!this.isMuted$.value);
   }
+  private setupMediaSession(track: Partial<track>) {
+    if (!('mediaSession' in navigator)) return;
+
+    let artworkSrc;
+
+    if (track.thumbnail) {
+      try {
+        // Essaie de créer une URL absolue à partir de track.thumbnail
+        artworkSrc = new URL(track.thumbnail, this.apiUrl).href;
+      } catch {
+        // En cas d'erreur, fallback à concaténation simple
+        artworkSrc = this.apiUrl + track.thumbnail;
+      }
+    } else {
+      artworkSrc = 'assets/default-artwork.png';
+    }
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: track.title || 'Unknown Title',
+      artist: track.artist || 'Unknown Artist',
+      album: 'Your App Name',
+      artwork: [
+        {
+          src: artworkSrc,
+          sizes: '512x512',
+          type: 'image/png',
+        },
+      ],
+    });
+
+    navigator.mediaSession.setActionHandler('play', () => this.playCurrent());
+    navigator.mediaSession.setActionHandler('pause', () => this.pause());
+    navigator.mediaSession.setActionHandler('previoustrack', () => this.playPrevious());
+    navigator.mediaSession.setActionHandler('nexttrack', () => this.playNext());
+    navigator.mediaSession.setActionHandler('seekbackward', () => this.skipBackward(10));
+    navigator.mediaSession.setActionHandler('seekforward', () => this.skipForward(10));
+    navigator.mediaSession.setActionHandler('stop', () => this.stop());
+  }
 
   skipForward(seconds: number = 15) {
-    const newTime = Math.min(this.audio.currentTime + seconds, this.duration$.value);
-    this.audio.currentTime = newTime;
+    this.seek(this.audio.currentTime + seconds);
   }
 
   skipBackward(seconds: number = 15) {
-    const newTime = Math.max(this.audio.currentTime - seconds, 0);
-    this.audio.currentTime = newTime;
+    this.seek(this.audio.currentTime - seconds);
   }
 
-  // Méthodes utilitaires
+  // Helpers pour affichage
   formatTime(seconds: number): string {
     if (isNaN(seconds)) return '0:00';
     const mins = Math.floor(seconds / 60);
@@ -262,26 +256,22 @@ export class AudioPlayerService {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   }
 
-  displayedTitle(maxLength: number = 25): string {
-    const currentTrackData = this.currentTrack$.value;
-    const title = currentTrackData?.title || 'Unknown Title';
+  displayedTitle(maxLength = 25): string {
+    const title = this.currentTrack$.value?.title || 'Unknown Title';
     return title.length > maxLength ? title.slice(0, maxLength) + '…' : title;
   }
 
-  displayedArtist(maxLength: number = 25): string {
-    const currentTrackData = this.currentTrack$.value;
-    const artist = currentTrackData?.artist || 'Unknown Artist';
+  displayedArtist(maxLength = 25): string {
+    const artist = this.currentTrack$.value?.artist || 'Unknown Artist';
     return artist.length > maxLength ? artist.slice(0, maxLength) + '…' : artist;
   }
 
-  getTrackName(maxLength: number = 25): string {
-    const currentTrackData = this.currentTrack$.value;
-    if (!currentTrackData?.src) return '';
-    const name = currentTrackData.title || 'Unknown Title';
+  getTrackName(maxLength = 25): string {
+    const name = this.currentTrack$.value?.title || 'Unknown Title';
     return name.length > maxLength ? name.slice(0, maxLength) + '…' : name;
   }
 
-  // Getters pour les valeurs actuelles
+  // Getters internes
   getCurrentTrack() {
     return this.currentTrack$.value;
   }

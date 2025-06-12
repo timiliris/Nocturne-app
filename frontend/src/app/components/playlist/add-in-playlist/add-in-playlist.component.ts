@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {Playlist, PlaylistService} from "../../../services/playlist/playlist.service";
 import {IonButton, IonIcon, IonItemOption, IonSelect, IonSelectOption, IonText} from "@ionic/angular/standalone";
- // adapte le chemin
 
 @Component({
   selector: 'app-add-in-playlist',

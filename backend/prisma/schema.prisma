@@ -46,8 +46,8 @@ model Song {
   youtubeUrl  String
   thumbnail   String?
   description String?
-  duration    Int?
-  views       Int?           @default(0)
+  duration    BigInt?
+  views       BigInt?           @default(0)
   createdAt   DateTime       @default(now())
   playlists   PlaylistSong[]
 }

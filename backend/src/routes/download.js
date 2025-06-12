@@ -8,6 +8,12 @@ const prisma = require("../../prisma/prismaClient");
 
 const router = Router();
 
+function sanitizeBigInt(obj) {
+    return JSON.parse(JSON.stringify(obj, (key, value) =>
+        typeof value === "bigint" ? Number(value) : value
+    ));
+}
+
 router.post("/", async (req, res) => {
     const { url } = req.body;
 
@@ -19,14 +25,12 @@ router.post("/", async (req, res) => {
     const downloadsDir = path.resolve("downloads");
     const thumbnailsDir = path.join(downloadsDir, "thumbnails");
 
-    // Création des dossiers si nécessaires
     if (!fs.existsSync(downloadsDir)) fs.mkdirSync(downloadsDir, { recursive: true });
     if (!fs.existsSync(thumbnailsDir)) fs.mkdirSync(thumbnailsDir, { recursive: true });
 
     const filePath = path.join(downloadsDir, `${id}.mp3`);
     const thumbnailPath = path.join(thumbnailsDir, `${id}.jpg`);
 
-    // 1. Récupérer les infos JSON de la vidéo
     exec(`yt-dlp -j ${url}`, (err, stdout, stderr) => {
         if (err) {
             console.error(stderr);
@@ -47,7 +51,6 @@ router.post("/", async (req, res) => {
         const views = info.view_count || 0;
         const duration = info.duration || 0;
 
-        // 2. Télécharger la miniature si elle existe
         const downloadThumbnail = () => {
             return new Promise((resolve, reject) => {
                 if (!thumbnailUrl) return resolve(null);
@@ -55,19 +58,18 @@ router.post("/", async (req, res) => {
                 const file = fs.createWriteStream(thumbnailPath);
                 https.get(thumbnailUrl, (response) => {
                     if (response.statusCode !== 200) {
-                        return resolve(null); // Continue sans thumbnail
+                        return resolve(null);
                     }
 
                     response.pipe(file);
                     file.on("finish", () => file.close(() => resolve(`/downloads/thumbnails/${id}.jpg`)));
                 }).on("error", (err) => {
                     console.error("Thumbnail download error:", err);
-                    resolve(null); // Ignore l’erreur pour ne pas bloquer
+                    resolve(null);
                 });
             });
         };
 
-        // 3. Télécharger le son en MP3
         const cmd = `yt-dlp -f bestaudio --extract-audio --audio-format mp3 -o "${filePath}" ${url}`;
 
         exec(cmd, async (error, stdout2, stderr2) => {
@@ -94,7 +96,7 @@ router.post("/", async (req, res) => {
                 });
 
                 console.log("Inserted song in DB:", song);
-                res.json({ message: "Download complete", song });
+                res.json({ message: "Download complete", song: sanitizeBigInt(song) });
             } catch (dbError) {
                 console.error(dbError);
                 res.status(500).json({ error: "Database error" });
@@ -102,5 +104,4 @@ router.post("/", async (req, res) => {
         });
     });
 });
-
 module.exports = router;
