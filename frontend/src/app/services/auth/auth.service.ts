@@ -13,7 +13,7 @@ export class AuthService {
   private router = inject(Router)
   private _isAuthenticated = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this._isAuthenticated.asObservable();
-  apiUrl = environment.apiUrl || (window as any).ENV.API_URL;
+  apiUrl = environment.apiUrl;
 
   constructor() {}
 

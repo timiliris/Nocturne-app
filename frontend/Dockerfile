@@ -17,6 +17,7 @@ RUN node scripts/env-replace.js || true
 
 # Build Angular/Ionic
 RUN npm run build
+
 # Étape 2 : Serveur Nginx avec injection dynamique d'environnement
 FROM nginx:alpine
 
@@ -31,11 +32,10 @@ COPY nginx.conf /etc/nginx/conf.d/
 
 # Copier les fichiers d’environnement dynamique
 COPY env.template.js /usr/share/nginx/html/env.template.js
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 
 # Exposer le port
 EXPOSE 8100
 
-# Lancer le script d’entrée
-ENTRYPOINT ["/entrypoint.sh"]
+# Démarrer Nginx en mode foreground
+CMD ["nginx", "-g", "daemon off;"]
+

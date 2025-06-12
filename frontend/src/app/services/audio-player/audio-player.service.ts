@@ -18,7 +18,7 @@ export interface Playlist {
 @Injectable({ providedIn: 'root' })
 export class AudioPlayerService {
   api = inject(ApiService);
-  apiUrl = environment.apiUrl || (window as any).ENV.API_URL;
+  apiUrl = environment.apiUrl ;
   private audio = new Audio();
 
   // BehaviorSubjects pour l'état

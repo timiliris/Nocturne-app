@@ -13,7 +13,7 @@ import {track} from "../types/track.interface";
 export class ApiService {
 
   http = inject(HttpClient);
-  baseUrl: string = environment.apiUrl || (window as any).ENV.API_URL + '/api';
+  baseUrl: string = environment.apiUrl + '/api';
 
   constructor() { }
 

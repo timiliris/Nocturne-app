@@ -26,7 +26,7 @@ export class PlaylistService {
   private router = inject(Router)
 
 
-  private apiUrl = environment.apiUrl || (window as any).ENV.API_URL + '/api/playlists';
+  private apiUrl = environment.apiUrl + '/api/playlists';
   form: FormGroup;
   public playlists : Playlist[] = [];
 
