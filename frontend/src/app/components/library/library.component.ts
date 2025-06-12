@@ -4,11 +4,12 @@ import {AudioPlayerService} from "../../services/audio-player/audio-player.servi
 import {track} from "../../types/track.interface";
 import {Component, inject, OnInit} from "@angular/core";
 import {ApiService} from "../../services/api.service";
-import {IonItemOption, IonItemOptions, IonItemSliding} from "@ionic/angular/standalone";
+import {IonItemOption, IonItemOptions, IonItemSliding, IonSearchbar} from "@ionic/angular/standalone";
 import { IonIcon, IonImg, IonItem, IonLabel, IonList, IonText, IonThumbnail} from "@ionic/angular/standalone";
 import {NgForOf, NgIf} from "@angular/common";
 import {AddInPlaylistComponent} from "../playlist/add-in-playlist/add-in-playlist.component";
 import {LibraryService} from "../../services/library/library.service";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-library',
@@ -26,6 +27,8 @@ import {LibraryService} from "../../services/library/library.service";
     IonItemOptions,
     IonItemOption,
     AddInPlaylistComponent,
+    IonSearchbar,
+    FormsModule,
   ],
   templateUrl: './library.component.html',
   styleUrls: ['./library.component.css'] // <-- correction ici
@@ -35,7 +38,10 @@ export class LibraryComponent implements OnInit {
   api = inject(ApiService);
   library = inject(LibraryService);
   songs: track[] = [];
+  filteredSongs: track[] = [];
+  searchTerm: string = '';
   currentSong: string | null = null;
+
 
   constructor(private http: HttpClient, protected audioService: AudioPlayerService) {}
 
@@ -48,10 +54,22 @@ export class LibraryComponent implements OnInit {
     this.api.getSongs().subscribe({
       next: data => {
         this.songs = data;
+        this.filteredSongs = data; // initialiser la liste filtrée
         this.audioService.tracks = data; // garder les données synchronisées
       },
       error: err => console.error(err)
     });
+  }
+  filterSongs() {
+    const term = this.searchTerm.toLowerCase().trim();
+    if (!term) {
+      this.filteredSongs = this.songs;
+    } else {
+      this.filteredSongs = this.songs.filter(song =>
+        song.title.toLowerCase().includes(term) ||
+        song.artist.toLowerCase().includes(term)
+      );
+    }
   }
 
   getIMGUrl(filePath: string): string {
