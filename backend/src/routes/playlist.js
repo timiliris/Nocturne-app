@@ -2,6 +2,24 @@ const { Router } = require("express");
 const prisma = require("../../prisma/prismaClient");
 
 const router = Router();
+function bigIntToString(obj) {
+    if (Array.isArray(obj)) {
+        return obj.map(bigIntToString);
+    } else if (obj !== null && typeof obj === "object") {
+        const newObj = {};
+        for (const key in obj) {
+            if (typeof obj[key] === "bigint") {
+                newObj[key] = obj[key].toString();
+            } else if (typeof obj[key] === "object") {
+                newObj[key] = bigIntToString(obj[key]);
+            } else {
+                newObj[key] = obj[key];
+            }
+        }
+        return newObj;
+    }
+    return obj;
+}
 
 // GET /api/playlists - Toutes les playlists
 router.get("/", async (req, res) => {
@@ -13,7 +31,7 @@ router.get("/", async (req, res) => {
                 },
             },
         });
-        res.json(playlists);
+        res.json(bigIntToString(playlists));
     } catch (error) {
         res.status(500).json({ error: "Erreur lors de la récupération des playlists" });
     }
@@ -31,7 +49,7 @@ router.get("/:id", async (req, res) => {
             },
         });
         if (!playlist) return res.status(404).json({ error: "Playlist non trouvée" });
-        res.json(playlist);
+        res.json(bigIntToString(playlists));
     } catch (error) {
         res.status(500).json({ error: "Erreur lors de la récupération de la playlist" });
     }
@@ -57,7 +75,7 @@ router.post("/", async (req, res) => {
                 },
             },
         });
-        res.status(201).json(newPlaylist);
+        res.status(201).json(bigIntToString(newPlaylist));
     } catch (error) {
         console.error(error);
         res.status(400).json({ error: "Erreur lors de la création de la playlist" });
@@ -90,7 +108,7 @@ router.put("/:id", async (req, res) => {
                 },
             },
         });
-        res.json(updatedPlaylist);
+        res.json(bigIntToString(updatedPlaylist));
     } catch (error) {
         console.error(error);
         res.status(400).json({ error: "Erreur lors de la mise à jour de la playlist" });
