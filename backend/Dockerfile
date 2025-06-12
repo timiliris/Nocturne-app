@@ -2,9 +2,9 @@ FROM node:20-bullseye
 
 # Installer Python, pip, yt-dlp, ffmpeg, netcat
 RUN apt-get update && apt-get install -y \
-    python3 python3-pip ffmpeg netcat \
+    python3 python3-pip ffmpeg netcat tor \
   && pip3 install yt-dlp \
-  && apt-get clean
+  && apt-get clean \
 
 WORKDIR /app
 
@@ -41,6 +41,7 @@ EXPOSE 3000
 CMD sh -c '\
   echo "⏳ Waiting for database..." && \
   until nc -z db 5432; do sleep 1; done && \
+  npx prisma generate && \
   echo "🚀 Running migrations..." && \
   npx prisma migrate deploy && \
   echo "🟢 Starting server..." && \

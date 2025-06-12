@@ -1,4 +1,14 @@
 services:
+  tor:
+    image: dperson/torproxy
+    container_name: tor
+    restart: always
+    ports:
+      - "9050:9050" # Proxy SOCKS5
+    environment:
+      - TOR_NewCircuitPeriod=15
+    command: tor
+
   backend:
     build:
       context: ./backend
@@ -26,6 +36,7 @@ services:
       - ./backend:/app
     depends_on:
       - db
+      - tor
 
   frontend:
     build:
