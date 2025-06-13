@@ -1,4 +1,4 @@
-# 🎵 Nocturne
+# 🎵 Nocturne-app
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org/)
