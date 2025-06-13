@@ -1,8 +1,12 @@
 # 🎵 Nocturne
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
-[![Angular](https://img.shields.io/badge/Angular-15+-red.svg)](https://angular.io/)
+[![Node.js](https://img.shields.io/badge/Node.js-20+-green.svg)](https://nodejs.org/)
+[![Angular](https://img.shields.io/badge/Angular-19+-red.svg)](https://angular.io/)
+[![Ionic](https://img.shields.io/badge/Ionic-7+-blue.svg)](https://ionicframework.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-5+-blue.svg)](https://www.prisma.io/)
+[![Meilisearch](https://img.shields.io/badge/Meilisearch-1.15+-orange.svg)](https://www.meilisearch.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue.svg)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)](https://docs.docker.com/compose/)
 
 > Your personal music streaming platform - Download, organize, and enjoy your music library anywhere.
