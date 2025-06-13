@@ -1,50 +1,37 @@
-FROM node:20-bullseye
+FROM node:20-alpine
 
-# Installer Python, pip, yt-dlp, ffmpeg, netcat
-RUN apt-get update && apt-get install -y \
-    python3 python3-pip ffmpeg netcat tor \
-  && pip3 install yt-dlp \
-  && apt-get clean \
+# Installer dépendances système nécessaires
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    ffmpeg \
+    bash \
+    shadow \
+    netcat-openbsd \
+    openssl
+
+# Installer yt-dlp dans un virtualenv Python (optionnel)
+RUN python3 -m venv /opt/venv \
+    && /opt/venv/bin/pip install --upgrade pip \
+    && /opt/venv/bin/pip install yt-dlp
+
+ENV PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /app
 
-# Copier les dépendances et installer
+# Copier package.json et prisma avant npm install (pour cache Docker)
 COPY package*.json ./
-RUN npm install --legacy-peer-deps
-
-# Copier le reste du code
-COPY . .
 COPY prisma ./prisma
 
-# Variables d'environnement
-ARG GLOBAL_USERNAME
-ARG GLOBAL_PASSWORD
-ARG DATABASE_PROVIDER
-ARG DATABASE_URL
-ARG FRONTEND_URL
-ARG SESSION_SECRET
-ARG API_HOST
-ARG API_PORT
+# Installer dépendances Node.js
+RUN npm install --legacy-peer-deps
 
-ENV DATABASE_PROVIDER=${DATABASE_PROVIDER}
-ENV DATABASE_URL=${DATABASE_URL}
-ENV GLOBAL_USERNAME=${GLOBAL_USERNAME}
-ENV GLOBAL_PASSWORD=${GLOBAL_PASSWORD}
-ENV FRONTEND_URL=${FRONTEND_URL}
-ENV SESSION_SECRET=${SESSION_SECRET}
-ENV API_HOST=${API_HOST}
-ENV API_PORT=${API_PORT}
+# Générer Prisma client
+RUN npx prisma generate
+
+# Copier le reste de l'application
+COPY . .
 
 EXPOSE 3000
 
-# Commande de lancement avec attente + migrations + démarrage
-CMD sh -c '\
-  echo "⏳ Waiting for database..." && \
-  until nc -z db 5432; do sleep 1; done && \
-  npx prisma generate && \
-  echo "🚀 Running migrations..." && \
-  npx prisma migrate deploy && \
-  echo "🟢 Starting server..." && \
-  npm install --legacy-peer-deps && \
-  node src/server.js'
-
+CMD ["sh", "-c", "echo \"⏳ Waiting for database...\" && until nc -z db 5432; do sleep 1; done && echo \"🚀 Running migrations...\" && npx prisma migrate deploy && echo \"🟢 Starting server...\" && node src/server.js"]
