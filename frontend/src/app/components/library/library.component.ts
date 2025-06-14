@@ -1,4 +1,4 @@
-import {environment} from "../../../environments/environment.prod";
+import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {AudioPlayerService} from "../../services/audio-player/audio-player.service";
 import {track} from "../../types/track.interface";

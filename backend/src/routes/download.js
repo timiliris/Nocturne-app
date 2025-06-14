@@ -13,10 +13,10 @@ function sanitizeBigInt(obj) {
         typeof value === "bigint" ? Number(value) : value
     ));
 }
-function runYtDlpInfo(url, useTor = false) {
-    const proxy = useTor ? '--proxy socks5h://tor:9050' : '';
+
+function runYtDlpInfo(url) {
     return new Promise((resolve, reject) => {
-        exec(`yt-dlp --cookies /app/cookies.txt ${proxy} -j ${url}`, (err, stdout, stderr) => {
+        exec(`yt-dlp -j ${url}`, (err, stdout, stderr) => {
             if (err) return reject({ err, stderr });
             try {
                 const info = JSON.parse(stdout);
@@ -28,17 +28,15 @@ function runYtDlpInfo(url, useTor = false) {
     });
 }
 
-function downloadAudio(url, filePath, useTor = false) {
-    const proxy = useTor ? '--proxy socks5h://tor:9050' : '';
+function downloadAudio(url, filePath) {
     return new Promise((resolve, reject) => {
-        const cmd = `yt-dlp --cookies /app/cookies.txt ${proxy} -f bestaudio --extract-audio --audio-format mp3 -o "${filePath}" ${url}`;
+        const cmd = `yt-dlp -f bestaudio --extract-audio --audio-format mp3 -o "${filePath}" ${url}`;
         exec(cmd, (err, stdout, stderr) => {
             if (err) return reject({ err, stderr });
             resolve();
         });
     });
 }
-
 
 router.post("/", async (req, res) => {
     const { url } = req.body;
@@ -58,14 +56,9 @@ router.post("/", async (req, res) => {
     let info;
     try {
         info = await runYtDlpInfo(url);
-    } catch (firstErr) {
-        console.warn("Normal fetch failed, retrying via Tor...");
-        try {
-            info = await runYtDlpInfo(url, true);
-        } catch (torErr) {
-            console.error("Both attempts failed:", torErr.stderr);
-            return res.status(500).json({ error: "Failed to fetch video info", details: torErr.stderr });
-        }
+    } catch (err) {
+        console.error("Failed to fetch video info:", err.stderr);
+        return res.status(500).json({ error: "Failed to fetch video info", details: err.stderr });
     }
 
     const title = info.title || `Song ${id}`;
@@ -91,15 +84,10 @@ router.post("/", async (req, res) => {
     };
 
     try {
-        await downloadAudio(url, filePath); // 1ère tentative sans Tor
-    } catch (firstErr) {
-        console.warn("Audio download failed, retrying via Tor...");
-        try {
-            await downloadAudio(url, filePath, true);
-        } catch (torErr) {
-            console.error("Both audio attempts failed:", torErr.stderr);
-            return res.status(500).json({ error: "yt-dlp failed", details: torErr.stderr });
-        }
+        await downloadAudio(url, filePath);
+    } catch (err) {
+        console.error("Audio download failed:", err.stderr);
+        return res.status(500).json({ error: "yt-dlp failed", details: err.stderr });
     }
 
     const thumbnailRelPath = await downloadThumbnail();

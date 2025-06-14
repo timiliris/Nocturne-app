@@ -1,9 +1,8 @@
 import {Component, inject} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import {
-  IonButton, IonCardTitle, IonCard, IonCardContent,
-  IonContent, IonHeader, IonInput, IonItem,
-  IonSpinner, IonText, IonTitle, IonToolbar,
+  IonButton, IonCardTitle, IonCard, IonCardContent, IonInput, IonItem,
+  IonSpinner, IonText,
   IonThumbnail, IonLabel, IonChip, IonIcon, IonCardHeader, IonImg, IonCol, IonRow, IonGrid
 } from "@ionic/angular/standalone";
 import { FormsModule } from "@angular/forms";
@@ -12,7 +11,7 @@ import { addIcons } from 'ionicons';
 import { playOutline, downloadOutline, timeOutline, eyeOutline } from 'ionicons/icons';
 import {track} from "../../types/track.interface";
 import {LibraryService} from "../../services/library/library.service";
-import {environment} from "../../../environments/environment.prod";
+import {environment} from "../../../environments/environment";
 
 
 @Component({
