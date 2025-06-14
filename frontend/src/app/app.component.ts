@@ -42,10 +42,15 @@ export class AppComponent  implements OnInit {
     { title: 'Download', url: '/download', icon: 'download' },
   ];
   constructor() {
+    addIcons(allIcons)
+  }
+
+
+  appInit(){
     this.libraryService.init();
     this.audioPlayer.init();
     this.playlistService.init();
-    addIcons(allIcons)   }
+  }
 
 
 
@@ -66,6 +71,16 @@ export class AppComponent  implements OnInit {
   ngOnInit() {
     // Vérifier la session au démarrage de l'application
     this.authService.checkSession().subscribe({
+      next: (res) => {
+        console.log('Session active:', res);
+        if( res.authenticated) {
+          this.appInit();
+        }
+        else{
+          console.log('Aucune session active, redirection vers la page de connexion');
+          this.router.navigate(['/auth']).then();
+        }
+      },
       error: (error) => {
         console.log('Pas de session active');
 

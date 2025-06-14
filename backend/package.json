@@ -4,8 +4,6 @@
   "description": "backend for nocturne app",
   "main": "src/server.js",
   "scripts": {
-    "dev": "ts-node-dev src/server.js",
-    "build": "tsc",
     "start": "node src/server.js"
   },
   "author": "Timiliris_420",

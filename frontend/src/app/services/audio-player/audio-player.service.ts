@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from '../api.service';
 import { track } from '../../types/track.interface';
-import { environment } from '../../../environments/environment.prod';
+import { environment } from '../../../environments/environment';
 
 export interface Playlist {
   songs: { song: track }[];
@@ -68,7 +68,6 @@ export class AudioPlayerService {
   }
 
   init() {
-    this.loadTracks();
     this.audio.volume = this.volume$.value;
   }
 

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import { Observable } from 'rxjs';
 import {track} from "../../types/track.interface";
-import {environment} from "../../../environments/environment.prod";
+import {environment} from "../../../environments/environment";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 

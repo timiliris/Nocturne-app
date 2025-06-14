@@ -2,12 +2,12 @@ import {Component, inject, Input, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {Playlist, PlaylistService} from "../../../services/playlist/playlist.service";
-import {IonButton, IonIcon, IonItemOption, IonSelect, IonSelectOption, IonText} from "@ionic/angular/standalone";
+import {IonIcon, IonSelect, IonSelectOption, IonText} from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-add-in-playlist',
   standalone: true,
-  imports: [CommonModule, FormsModule, IonButton, IonIcon, IonSelect, IonSelectOption, IonItemOption, IonText],
+  imports: [CommonModule, FormsModule, IonIcon, IonSelect, IonSelectOption, IonText],
   templateUrl: './add-in-playlist.component.html',
   styleUrls: ['./add-in-playlist.component.css']
 })

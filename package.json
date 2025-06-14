@@ -1,0 +1,13 @@
+{
+  "name": "mon-projet",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "concurrently \"npm:db\" \"npm:backend\" \"npm:frontend\"",
+    "db": "cd PostgreSQL && docker compose up",
+    "backend": "cd backend && npm start",
+    "frontend": "cd frontend && ng serve"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
