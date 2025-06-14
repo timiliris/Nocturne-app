@@ -21,7 +21,7 @@ fi
 meilisearch &
 
 # Wait for Meilisearch to be ready
-until curl -s http://localhost:7701/health | grep '"status":"available"' > /dev/null; do
+until curl -s http://localhost:7700/health | grep '"status":"available"' > /dev/null; do
   echo "⏳ Waiting for Meilisearch..."
   sleep 1
 done
@@ -35,7 +35,7 @@ create_key() {
   NAME=$1
   ACTIONS=$2
 
-  RESPONSE=$(curl -s -X POST http://localhost:7701/keys \
+  RESPONSE=$(curl -s -X POST http://localhost:7700/keys \
     -H "Authorization: Bearer $MASTER_KEY" \
     -H "Content-Type: application/json" \
     -d '{

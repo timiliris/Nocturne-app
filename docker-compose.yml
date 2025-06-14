@@ -6,7 +6,7 @@ services:
         MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
     container_name: nocturne-meilisearch
     ports:
-      - "7701:7700"
+      - "7700:7700"
     environment:
       MEILI_ENV: production
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
