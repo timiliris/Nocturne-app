@@ -1,8 +1,8 @@
 {
-  "name": "mon-projet",
+  "name": "nocturne-app",
   "version": "1.0.0",
   "scripts": {
-    "start": "concurrently \"npm:db\" \"npm:backend\" \"npm:frontend\"",
+    "start": "concurrently --names \"🐘 DB,🧠 BACKEND,🎨 FRONTEND\" --prefix-colors \"magenta,cyan,green\" \"npm run db\" \"npm run backend\" \"npm run frontend\"",
     "db": "cd PostgreSQL && docker compose up",
     "backend": "cd backend && npm start",
     "frontend": "cd frontend && ng serve"

@@ -16,7 +16,7 @@ ENV API_URL=${API_URL}
 RUN node scripts/env-replace.js || true
 
 # Build Angular/Ionic
-RUN npm run build
+RUN npm run build:production
 
 # Étape 2 : Serveur Nginx avec injection dynamique d'environnement
 FROM nginx:alpine
