@@ -40,6 +40,8 @@ interface Playlist {
   styleUrls: ['./audio-player.component.css']
 })
 export class AudioPlayerComponent implements OnInit, OnDestroy {
+
+
   private sub: Subscription = new Subscription();
   isSmallScreen = window.innerWidth < 768;
 

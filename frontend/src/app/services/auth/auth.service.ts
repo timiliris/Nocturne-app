@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, tap } from 'rxjs';
 import {environment} from "../../../environments/environment";
 import {Router} from "@angular/router";
+import {AudioPlayerService} from "../audio-player/audio-player.service";
+import {MenuController} from "@ionic/angular";
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,8 @@ import {Router} from "@angular/router";
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router)
+  private menuController = inject(MenuController);
+  private audioPlayerService = inject(AudioPlayerService);
   private _isAuthenticated = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this._isAuthenticated.asObservable();
   apiUrl = environment.apiUrl;
@@ -34,7 +38,15 @@ export class AuthService {
     }).pipe(
       tap(() => {
         this._isAuthenticated.next(false);
-        this.router.navigate(['/auth']).then()
+        this.audioPlayerService.stop();
+        this.router.navigate(['/auth']).then(res => {
+          if(res){
+            this.menuController.close('main-menu').then()
+          }
+          else {
+            console.error('Erreur lors de la navigation vers /auth');
+          }
+        })
       })
     );
   }

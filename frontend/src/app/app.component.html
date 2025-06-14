@@ -1,6 +1,6 @@
 <ion-app>
   <ion-split-pane contentId="main-content" style="--side-max-width: 10%" >
-    <ion-menu contentId="main-content" type="overlay">
+    <ion-menu contentId="main-content" id="main-menu" type="overlay">
       <ion-content>    <ion-list id="inbox-list">
         <ion-card-title class="ion-margin" color="primary"> <b> NOCTURNE </b>🌛</ion-card-title>
         @if(authService.isAuthenticated$ | async){

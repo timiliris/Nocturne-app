@@ -70,6 +70,7 @@ export class PlaylistService {
         this.playlists.unshift(playlist);
         this.form.reset({ color: 'primary' });
         this.refreshPlaylist();
+        this.toggleAddPlaylist();
       },
       error: (err) => {
         console.error('Erreur lors de la création de la playlist', err);
