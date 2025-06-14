@@ -1,0 +1,18 @@
+services:
+  meilisearch:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
+    ports:
+      - "7701:7700"
+    environment:
+      MEILI_ENV: production
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
+    volumes:
+      - meili_data:/meili_data
+      - ./.env:/app/.env
+
+volumes:
+  meili_data:
