@@ -1,5 +1,5 @@
-@for(song of tracks; track song.id){
-  <ion-item-sliding>
+<ion-list>
+  <ion-item-sliding *ngFor="let song of displayedTracks; trackBy: trackById">
     <ion-item-options side="end">
       <ion-item-option color="primary" (click)="openPlaylistModal(song)">
         <ion-icon slot="start" size="large" name="cog"></ion-icon>
@@ -29,48 +29,50 @@
         </ion-text>
       </ion-label>
 
-      <!-- Indicateur de lecture -->
-      @if(audioService.getCurrentTrack()?.id  === song.id){
-        <app-speaker-anim slot="end"></app-speaker-anim>
-      }
+      <app-speaker-anim *ngIf="audioService.getCurrentTrack()?.id === song.id" slot="end"></app-speaker-anim>
     </ion-item>
   </ion-item-sliding>
+</ion-list>
 
-  <!-- Modal séparée (à placer en dehors de la boucle) -->
-  <ion-modal
-    [isOpen]="isModalOpen"
-    (willDismiss)="onWillDismiss($event)"
-    [canDismiss]="true">
+<ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)" [disabled]="allLoaded">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Chargement des morceaux...">
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>
 
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>{{ selectedSong?.title }}</ion-title>
-          <ion-buttons slot="end">
-            <ion-button fill="clear" (click)="cancel()">
-              <ion-icon name="close"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding">
-        <ion-list>
+<!-- Modal séparée -->
+<ion-modal
+  [isOpen]="isModalOpen"
+  (willDismiss)="onWillDismiss($event)"
+  [canDismiss]="true"
+>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>{{ selectedSong?.title }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button fill="clear" (click)="cancel()">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
 
-          <!-- Buttons for adding to playlist -->
-          <ion-item (click)="openPlaylistManagerModal()" lines="none" button>
-            <ion-icon name="add" color="primary" slot="start"></ion-icon>
-            <ion-label>Add to Playlist</ion-label>
-          </ion-item>
+        <!-- Buttons for adding to playlist -->
+        <ion-item (click)="openPlaylistManagerModal()" lines="none" button>
+          <ion-icon name="add" color="primary" slot="start"></ion-icon>
+          <ion-label>Add to Playlist</ion-label>
+        </ion-item>
 
-
-          <!-- buttons for deleting the song -->
-          <ion-item lines="none" button (click)="onDeleteSong()">
-            <ion-icon name="trash" color="danger" slot="start"></ion-icon>
-            <ion-label>Delete</ion-label>
-          </ion-item>
-        </ion-list>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
-}
-
+        <!-- buttons for deleting the song -->
+        <ion-item lines="none" button (click)="onDeleteSong()">
+          <ion-icon name="trash" color="danger" slot="start"></ion-icon>
+          <ion-label>Delete</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

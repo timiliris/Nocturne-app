@@ -12,7 +12,7 @@
       <ion-item button lines="none" (click)="onPlaylistSelect(playlist.id)">
         <ion-label>
           <h3>{{ playlist.name }}</h3>
-          <p class="song-count">{{ playlist.songs?.length || 0 }} tracks</p>
+          <p class="song-count">{{ playlist.songs.length || 0 }} tracks</p>
         </ion-label>
         </ion-item>
     }
