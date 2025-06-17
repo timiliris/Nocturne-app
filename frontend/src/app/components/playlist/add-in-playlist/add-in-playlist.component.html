@@ -1,15 +1,26 @@
-<ion-text (click)="openSelector()">
-  <ion-icon name="disc-outline" ></ion-icon>
-  <ion-select
-    *ngIf="isSelectorOpen"
-    placeholder="Choisir une playlist"
-    [interfaceOptions]="{ header: 'Sélectionner une playlist' }"
-    (ionChange)="onPlaylistChange($event)"
-    [value]="selectedPlaylistId"
-  >
-    <ion-select-option *ngFor="let playlist of playlistService.playlists" [value]="playlist.id">
-      {{ playlist.name }}
-    </ion-select-option>
-  </ion-select>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Playlist Manager</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-list>
+    @for(playlist of playlistService.playlists ; track playlist.id) {
+      <ion-item button lines="none" (click)="onPlaylistSelect(playlist.id)">
+        <ion-label>
+          <h3>{{ playlist.name }}</h3>
+          <p class="song-count">{{ playlist.songs?.length || 0 }} tracks</p>
+        </ion-label>
+        </ion-item>
+    }
+  </ion-list>
+</ion-content>
 
-</ion-text>
+
+
+
+
+

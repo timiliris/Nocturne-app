@@ -1,4 +1,4 @@
-const backendUrl = "http://localhost:3000";
+const backendUrl = "https://nocturne-api.3de-scs.be";
 
 // Check if user is authenticated via background script
 async function isAuthenticated() {

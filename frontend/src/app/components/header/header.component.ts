@@ -2,9 +2,8 @@ import {Component, Input} from '@angular/core';
 import {
   IonBackButton,
   IonButtons,
-  IonCardSubtitle,
   IonHeader,
-  IonMenuButton,
+  IonMenuButton, IonText,
   IonTitle,
   IonToolbar
 } from "@ionic/angular/standalone";
@@ -17,8 +16,8 @@ import {
     IonButtons,
     IonMenuButton,
     IonTitle,
-    IonCardSubtitle,
-    IonBackButton
+    IonBackButton,
+    IonText
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'

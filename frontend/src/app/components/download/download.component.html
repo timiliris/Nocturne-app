@@ -1,102 +1,105 @@
-<ion-card>
+
   <ion-card-header>
-    <ion-card-title>
-     <ion-icon name="logo-youtube"></ion-icon> <h2> Youtube Download </h2>
+    <ion-card-title color="primary">
+     <ion-icon name="logo-youtube"></ion-icon> Youtube Download
     </ion-card-title>
   </ion-card-header>
 
   <ion-card-content>
-    <!-- Saisie URL -->
+    <!-- Saisie URL -->          <ion-input
+    fill="outline"
+    placeholder="URL YouTube (ex: https://youtube.com/watch?v=...)"
+    [(ngModel)]="url"
+    (ionInput)="showPreview = false"
+  >
+  </ion-input>
     <ion-grid>
       <ion-row>
-        <ion-col size-xs="12">
-          <ion-input
-            fill="outline"
-            placeholder="URL YouTube (ex: https://youtube.com/watch?v=...)"
-            [(ngModel)]="url"
-            (ionInput)="showPreview = false; videoInfo = null"
-          >
-          </ion-input>
-        </ion-col>
         <ion-col size-xs="6">
           <ion-button
             fill="outline"
+            expand="block"
             (click)="previewVideo()"
             [disabled]="loading || !isValidYouTubeUrl()">
             <ion-spinner *ngIf="loading" name="dots"></ion-spinner>
             <ion-icon *ngIf="!loading" name="eye-outline"></ion-icon>
             <span *ngIf="!loading" class="ion-margin-start">preview</span>
           </ion-button>
-          <ion-col size-xs="6">
-            <ion-button
-              fill="outline"
-              (click)="downloadSong()"
-              color="success"
-              [disabled]="downloading || !isValidYouTubeUrl()">
-              <ion-icon *ngIf="!downloading" name="download-outline"></ion-icon>
-              <span *ngIf="!downloading" class="ion-margin-start">Download</span>
-              <span *ngIf="downloading" class="ion-margin-start">Downloading</span>
-              <ion-spinner *ngIf="downloading" name="dots"></ion-spinner>
-            </ion-button>
-          </ion-col>
         </ion-col>
+          <ion-col size-xs="6">
+            @if(!showPreview){
+              <ion-button
+                fill="outline"
+                expand="block"
+                (click)="downloadSong()"
+                color="success"
+                [disabled]="downloading || !isValidYouTubeUrl()">
+                <ion-icon *ngIf="!downloading" name="download-outline"></ion-icon>
+                <span *ngIf="!downloading" class="ion-margin-start">Download</span>
+                <span *ngIf="downloading" class="ion-margin-start">Downloading</span>
+                <ion-spinner *ngIf="downloading" name="dots"></ion-spinner>
+              </ion-button>
+            }
+
+          </ion-col>
+
       </ion-row>
     </ion-grid>
     <!-- Prévisualisation de la vidéo -->
-    <ion-card *ngIf="showPreview && videoInfo != null" class="preview-card">
-      <ion-item lines="none">
-        <ion-thumbnail slot="start">
-          <ion-img [src]="videoInfo.thumbnail" [alt]="videoInfo.title" />
-        </ion-thumbnail>
+    @if(showPreview && videoInfo){
+        <ion-item lines="none">
+          <ion-thumbnail slot="start">
+            <ion-img [src]="videoInfo.thumbnail" [alt]="videoInfo.title" />
+          </ion-thumbnail>
 
-        <ion-label>
-          <h2>{{ videoInfo.title }}</h2>
-          <p>{{ videoInfo.artist }}</p>
+          <ion-label>
+            <h2>{{ videoInfo.title }}</h2>
+            <p>{{ videoInfo.artist }}</p>
 
-          <div class="video-stats">
-            <ion-chip color="secondary">
-              <ion-icon name="time-outline"></ion-icon>
-              <ion-label color="light">{{ videoInfo.duration }}</ion-label>
-            </ion-chip>
+            <div class="video-stats">
+              <ion-chip color="secondary">
+                <ion-icon name="time-outline"></ion-icon>
+                <ion-label color="light">{{ videoInfo.duration }}</ion-label>
+              </ion-chip>
 
-            <ion-chip color="tertiary">
-              <ion-icon name="eye-outline"></ion-icon>
-              <ion-label color="light" >{{ videoInfo.views }}</ion-label>
-            </ion-chip>
-          </div>
-        </ion-label>
-      </ion-item>
+              <ion-chip color="tertiary">
+                <ion-icon name="eye-outline"></ion-icon>
+                <ion-label color="light" >{{ videoInfo.views }}</ion-label>
+              </ion-chip>
+            </div>
+          </ion-label>
+        </ion-item>
 
-      <!-- Description courte -->
-      <ion-card-content *ngIf="videoInfo.description">
-        <ion-text color="medium">
-          <p>{{ videoInfo.description.substring(0, 150) }}...</p>
-        </ion-text>
-      </ion-card-content>
-      <ion-item lines="none" class="ion-text-center">
-        <ion-button
-          slot="end"
-          fill="outline"
-          (click)="downloadSong()"
-          color="success"
-          [disabled]="downloading">
-          <ion-spinner *ngIf="downloading" name="dots"></ion-spinner>
-          <ion-icon *ngIf="!downloading" name="download-outline"></ion-icon>
-          <span *ngIf="!downloading" class="ion-margin-start">Download</span>
-          <span *ngIf="downloading" class="ion-margin-start">Downloading ...</span>
-        </ion-button>
+        <!-- Description courte -->
+        <ion-card-content *ngIf="videoInfo.description">
+          <ion-text color="medium">
+            <p>{{ videoInfo.description.substring(0, 150) }}...</p>
+          </ion-text>
+        </ion-card-content>
+        <ion-item lines="none" class="ion-text-center">
+          <ion-button
+            slot="end"
+            fill="outline"
+            (click)="downloadSong()"
+            color="success"
+            [disabled]="downloading">
+            <ion-spinner *ngIf="downloading" name="dots"></ion-spinner>
+            <ion-icon *ngIf="!downloading" name="download-outline"></ion-icon>
+            <span *ngIf="!downloading" class="ion-margin-start">Download</span>
+            <span *ngIf="downloading" class="ion-margin-start">Downloading ...</span>
+          </ion-button>
 
-        <ion-button
-          slot="start"
-          fill="outline"
-          color="danger"
-          (click)="resetForm()">
-          Cancel
-        </ion-button>
+          <ion-button
+            slot="start"
+            fill="outline"
+            color="danger"
+            (click)="resetForm()">
+            Cancel
+          </ion-button>
 
-      </ion-item>
+        </ion-item>
+    }
 
-    </ion-card>
 
     <!-- Messages de statut -->
     <ion-text
@@ -105,4 +108,4 @@
       <p class="ion-text-center">{{ message }}</p>
     </ion-text>
   </ion-card-content>
-</ion-card>
+

@@ -1,5 +1,5 @@
 // Background script to handle authentication state synchronization
-const backendUrl = "http://localhost:3000";
+const backendUrl = "https://nocturne-api.3de-scs.be";
 
 // Check auth status and store in extension storage
 async function updateAuthStatus() {

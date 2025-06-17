@@ -1,18 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import { Observable } from 'rxjs';
-import {track} from "../../types/track.interface";
 import {environment} from "../../../environments/environment";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-
-export interface Playlist {
-  id: string;
-  name: string;
-  color: string;
-  createdAt: string;
-  songs: { song: track }[]; // car relation via PlaylistSong
-}
+import {Playlist} from "../../types/playlist.interface";
 
 @Injectable({
   providedIn: 'root'

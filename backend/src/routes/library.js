@@ -76,21 +76,31 @@ router.delete("/:id", async (req, res) => {
             return res.status(404).json({ error: "Chanson non trouvée" });
         }
 
-        // Supprimer le fichier audio
-        const audioPath = path.join(__dirname, "../..", song.filePath);
-        console.log(`Suppression du fichier audio : ${audioPath}`);
-        if (fs.existsSync(audioPath)) {
-            fs.unlinkSync(audioPath);
-        }
-
-        // Supprimer la miniature (si elle existe)
-        if (song.thumbnail) {
-            const thumbnailPath = path.join(__dirname, "../..", song.thumbnail);
-            console.log(`Suppression du fichier img : ${thumbnailPath}`);
-            if (fs.existsSync(thumbnailPath)) {
-                fs.unlinkSync(thumbnailPath);
+        // Fonction utilitaire pour supprimer un fichier de manière robuste
+        const safeDelete = async (filePath) => {
+            try {
+                if (filePath) {
+                    const absolutePath = path.join(__dirname, "../..", filePath);
+                    if (fs.existsSync(absolutePath)) {
+                        await fs.promises.unlink(absolutePath);
+                        console.log(`Fichier supprimé : ${absolutePath}`);
+                    } else {
+                        console.warn(`Fichier non trouvé : ${absolutePath}`);
+                    }
+                }
+            } catch (err) {
+                console.error(`Erreur lors de la suppression de ${filePath}`, err);
             }
-        }
+        };
+
+        // Supprimer les fichiers
+        await safeDelete(song.filePath);
+        await safeDelete(song.thumbnail);
+
+        // Supprimer les entrées de la table PlaylistSong associées à cette chanson
+        await prisma.playlistSong.deleteMany({
+            where: { songId: songId },
+        });
 
         // Supprimer la chanson de la BDD
         await prisma.song.delete({

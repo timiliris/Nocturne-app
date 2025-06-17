@@ -1,6 +1,6 @@
-import {Component, inject, OnInit} from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Playlist, PlaylistService } from '../../../services/playlist/playlist.service';
+import {Component, inject} from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import {PlaylistService } from '../../../services/playlist/playlist.service';
 import { IonicModule } from '@ionic/angular';
 import {NgForOf, NgIf} from "@angular/common";
 import {Router} from "@angular/router";
@@ -17,7 +17,7 @@ import {Router} from "@angular/router";
     NgIf
   ]
 })
-export class PlaylistInMenuComponent implements OnInit {
+export class PlaylistInMenuComponent {
   router = inject(Router)
   isLoading = false;
 
@@ -25,35 +25,29 @@ export class PlaylistInMenuComponent implements OnInit {
 
   constructor(
     protected playlistService: PlaylistService,
-  ) {
+  ) {}
 
-  }
 
-  ngOnInit(): void {
-  }
-// Convertir hex en rgba avec alpha (opacité)
+// Convert hex color to rgba with alpha
   getRgbaColor(hexColor: string, alpha: number): string {
-    const c = hexColor.charAt(0) === '#' ? hexColor.substring(1) : hexColor;
-    const r = parseInt(c.substr(0, 2), 16);
-    const g = parseInt(c.substr(2, 2), 16);
-    const b = parseInt(c.substr(4, 2), 16);
+    let c = hexColor.replace('#', '');
+
+    // Support #RGB format
+    if (c.length === 3) {
+      c = c.split('').map(ch => ch + ch).join('');
+    }
+
+    const r = parseInt(c.substring(0, 2), 16);
+    const g = parseInt(c.substring(2, 4), 16);
+    const b = parseInt(c.substring(4, 6), 16);
+
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
 
-// Retourne un style de bordure avec opacité et couleur
+
+// return a border style with the given hex color and alpha
   getBorderStyle(hexColor: string, alpha: number): string {
     return `1px solid ${this.getRgbaColor(hexColor, alpha)}`;
   }
-
-// Fonction pour texte lisible (noir ou blanc)
-  getContrastedColor(hexColor: string): string {
-    const c = hexColor.charAt(0) === '#' ? hexColor.substring(1) : hexColor;
-    const r = parseInt(c.substr(0,2),16);
-    const g = parseInt(c.substr(2,2),16);
-    const b = parseInt(c.substr(4,2),16);
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return luminance > 0.5 ? '#000000' : '#ffffff';
-  }
-
 
 }

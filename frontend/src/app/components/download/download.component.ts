@@ -1,12 +1,12 @@
 import {Component, inject} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import {
-  IonButton, IonCardTitle, IonCard, IonCardContent, IonInput, IonItem,
+  IonButton, IonCardTitle, IonCardContent, IonInput, IonItem,
   IonSpinner, IonText,
   IonThumbnail, IonLabel, IonChip, IonIcon, IonCardHeader, IonImg, IonCol, IonRow, IonGrid
 } from "@ionic/angular/standalone";
 import { FormsModule } from "@angular/forms";
-import { NgIf, NgFor } from "@angular/common";
+import { NgIf } from "@angular/common";
 import { addIcons } from 'ionicons';
 import { playOutline, downloadOutline, timeOutline, eyeOutline } from 'ionicons/icons';
 import {track} from "../../types/track.interface";
@@ -17,8 +17,7 @@ import {environment} from "../../../environments/environment";
 @Component({
   selector: 'app-download-component',
   imports: [
-    IonItem, IonInput, IonButton, IonSpinner, IonText,
-    IonCard, IonCardContent, IonCardTitle, IonThumbnail,
+    IonItem, IonInput, IonButton, IonSpinner, IonText, IonCardContent, IonCardTitle, IonThumbnail,
     IonLabel, IonChip, IonIcon,
     FormsModule, NgIf, IonCardHeader, IonImg, IonCol, IonRow, IonGrid
   ],
@@ -33,20 +32,19 @@ export class DownloadComponent {
   downloading = false;
   loading = false;
   message = '';
-  videoInfo: track | null = null;
+  videoInfo!: track;
   showPreview = false;
 
   constructor(private http: HttpClient) {
     addIcons({ playOutline, downloadOutline, timeOutline, eyeOutline });
   }
 
-  // Prévisualiser les informations de la vidéo
+  // Preview the video from the URL entered
   previewVideo() {
     if (!this.url) return;
 
     this.loading = true;
     this.message = '';
-    this.videoInfo = null;
 
     this.http.post<any>(environment.apiUrl + '/api/preview', { url: this.url }, {
       withCredentials: true // Important pour envoyer le cookie !
@@ -65,7 +63,7 @@ export class DownloadComponent {
     });
   }
 
-  // Télécharger le morceau
+  // Download the song on the server
   downloadSong() {
     if (!this.url) return;
 
@@ -88,14 +86,13 @@ export class DownloadComponent {
     });
   }
 
-  // Réinitialiser le formulaire
+  // Reset of the form
   resetForm() {
     this.url = '';
-    this.videoInfo = null;
     this.showPreview = false;
   }
 
-  // Valider si l'URL est une URL YouTube valide
+  // Valid YouTube URL
   isValidYouTubeUrl(): boolean {
     if (!this.url) return false;
     const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[\w-]+/;

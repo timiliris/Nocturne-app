@@ -7,7 +7,7 @@
     "db": "cd PostgreSQL && docker compose up",
     "meili": "cd MeiliSearch && docker compose up",
     "backend": "cd backend && npm start",
-    "frontend": "cd frontend && ng serve"
+    "frontend": "cd frontend && ng serve --host=0.0.0.0"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

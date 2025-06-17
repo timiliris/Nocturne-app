@@ -135,27 +135,44 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
-// POST /api/playlists/:id/songs - Ajouter un son dans une playlist
+// POST /api/playlists/:id/songs - Add a song to a playlist
 router.post("/:id/songs", async (req, res) => {
-    const { songId } = req.body; // ✅ on prend songId depuis le body
+    const { songId } = req.body;
     const playlistId = req.params.id;
 
     if (!songId) {
-        return res.status(400).json({ error: "songId est requis" });
+        return res.status(400).json({ error: "songId is required" });
     }
 
     try {
+        // Check if the song is already in the playlist
+        const existing = await prisma.playlistSong.findFirst({
+            where: {
+                playlistId,
+                songId,
+            },
+        });
+
+        if (existing) {
+            return res.status(409).json({
+                error: "The song is already in this playlist.",
+            });
+        }
+
+        // Create the link between playlist and song
         const newLink = await prisma.playlistSong.create({
             data: {
                 playlist: { connect: { id: playlistId } },
                 song: { connect: { id: songId } },
             },
         });
+
         res.status(201).json(bigIntToString(newLink));
     } catch (error) {
-        console.error("Erreur lors de l'ajout du son :", error);
-        res.status(400).json({ error: "Erreur lors de l'ajout du son à la playlist" });
+        console.error("Error adding song to playlist:", error);
+        res.status(500).json({ error: "Internal error while adding the song to the playlist." });
     }
 });
+
 
 module.exports = router;

@@ -4,7 +4,7 @@ const libraryRouter = require("./routes/library");
 const previewRouter = require("./routes/preview");
 const playlistRouter = require("./routes/playlist");
 const authRouter = require("./routes/auth");
-const { basicAuth , requireAuth } = require("./middleware/auth");
+const {requireAuth } = require("./middleware/auth");
 const cors = require("cors");
 const session = require("express-session");
 const bodyParser = require("body-parser");
@@ -15,6 +15,7 @@ const app = express();
 app.use(cors({
     origin: [
         process.env.FRONTEND_URL,
+        'http://192.168.129.30:4200',
         'chrome-extension://*',
         'https://www.youtube.com',
         'https://youtube.com'

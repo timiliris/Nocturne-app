@@ -17,10 +17,6 @@ import {
 } from "@ionic/angular/standalone";
 import { track } from "../../types/track.interface";
 
-interface Playlist {
-  songs: { song: track }[];
-}
-
 @Component({
   selector: 'app-audio-player',
   standalone: true,
@@ -52,8 +48,6 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   currentTime$ = this.audioService.currentTime;
   volume$ = this.audioService.volume;
   isMuted$ = this.audioService.isMuted;
-  playlist$ = this.audioService.playlist;
-  currentIndex$ = this.audioService.currentIndex;
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -65,11 +59,6 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // Le service gère maintenant tous les événements audio
     this.audioService.init();
-  }
-
-  // Méthodes déléguées au service
-  loadPlaylist(playlist: Playlist) {
-    this.audioService.loadPlaylist(playlist);
   }
 
   play(track: track) {
@@ -98,9 +87,6 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
     this.audioService.playPrevious();
   }
 
-  stop() {
-    this.audioService.stop();
-  }
 
   seek(event: any) {
     const time = parseFloat(event.target.value);
@@ -133,12 +119,6 @@ export class AudioPlayerComponent implements OnInit, OnDestroy {
     });
 
     this.sub.add(sub);
-  }
-
-
-  getTrackName(): string {
-    const maxLength = this.isSmallScreen ? 25 : 50;
-    return this.audioService.getTrackName(maxLength);
   }
 
   formatTime(seconds: number): string {

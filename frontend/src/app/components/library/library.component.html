@@ -2,39 +2,12 @@
   <ion-searchbar
     [(ngModel)]="searchTerm"
     debounce="300"
-    placeholder="Rechercher une chanson"
+    placeholder="Search songs"
     (ionInput)="filterSongs()"
   ></ion-searchbar>
 
   <ion-list *ngIf="filteredSongs.length">
-    <ion-item-sliding *ngFor="let song of filteredSongs">
-      <ion-item-options>
-        <ion-item-option color="danger" (click)="deleteSong(song.id)">
-          <ion-icon name="trash"></ion-icon>
-        </ion-item-option>
-        <ion-item-option color="secondary">
-          <app-add-in-playlist [songId]="song.id"></app-add-in-playlist>
-        </ion-item-option>
-      </ion-item-options>
-
-      <ion-item
-        lines="none"
-        (click)="playSong(song.filePath, song.title, song.artist, song.thumbnail || '')"
-      >
-        <ion-thumbnail slot="start">
-          <ion-img
-            [src]="
-              getIMGUrl(song.thumbnail || '') || 'assets/default-thumbnail.png'
-            "
-            alt="{{ song.title }}"
-          ></ion-img>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-text color="light"><h3>{{ song.title }}</h3></ion-text>
-          <ion-text color="medium"><p>{{ song.artist }}</p></ion-text>
-        </ion-label>
-      </ion-item>
-    </ion-item-sliding>
+    <app-tracks-display [tracks]="filteredSongs"></app-tracks-display>
     <div style="height: 25vh"></div>
   </ion-list>
 

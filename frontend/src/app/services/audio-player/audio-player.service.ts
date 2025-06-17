@@ -3,10 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ApiService } from '../api.service';
 import { track } from '../../types/track.interface';
 import { environment } from '../../../environments/environment';
-
-export interface Playlist {
-  songs: { song: track }[];
-}
+import {Playlist} from "../../types/playlist.interface";
 
 @Injectable({ providedIn: 'root' })
 export class AudioPlayerService {
@@ -84,13 +81,16 @@ export class AudioPlayerService {
     });
   }
 
-  loadPlaylist(playlist: Playlist) {
-    const tracks = playlist.songs.map(s => s.song);
-    this.playlist$.next(tracks);
-    this.currentIndex$.next(0);
-    if (tracks.length > 0) {
-      this.play(tracks[0]);
+  loadPlaylist(playlist: Playlist | null) {
+    if(playlist) {
+      const tracks = playlist.songs.map(s => s.song);
+      this.playlist$.next(tracks);
+      this.currentIndex$.next(0);
+      if (tracks.length > 0) {
+        this.play(tracks[0]);
+      }
     }
+
   }
 
   setCurrentTrackIndex(index: number) {
@@ -269,7 +269,10 @@ export class AudioPlayerService {
     const name = this.currentTrack$.value?.title || 'Unknown Title';
     return name.length > maxLength ? name.slice(0, maxLength) + '…' : name;
   }
-
+  getIMGUrl(filePath: string): string {
+    const apiBaseUrl = environment.apiUrl;
+    return apiBaseUrl + filePath;
+  }
   // Getters internes
   getCurrentTrack() {
     return this.currentTrack$.value;

@@ -84,14 +84,4 @@ export class LoginComponent implements OnInit {
     });
 
   }
-  checkSession() {
-    this.AuthServices.checkSession().subscribe({
-      next: (res) => {
-        console.log("Session active :", res.authenticated);
-      },
-      error: err => {
-        console.error("Erreur lors de la vérification de la session", err);
-      }
-    });
-  }
 }

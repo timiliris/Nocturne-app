@@ -5,40 +5,22 @@
       <ion-icon name="play"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
-  <div *ngIf="isLoading">
-    <ion-item>
-      <ion-label>Chargement...</ion-label>
-    </ion-item>
-  </div>
+@if(isLoading){
+  <ion-item lines="none">
+    <ion-label>Loading  <ion-spinner></ion-spinner>  </ion-label>
+  </ion-item>
+}
 <div style="max-height: 90%; overflow-y: scroll">
   <ion-list *ngIf="playlist?.songs?.length">
-
-    <ion-item-sliding *ngFor="let song of songs">
-      <ion-item-options>
-        <ion-item-option color="danger" (click)="deleteSong(song.id)">Delete</ion-item-option>
-      </ion-item-options>
-
-      <ion-item lines="none" (click)="playSong(song.filePath, song.title, song.artist, song.thumbnail || '')">
-        <ion-thumbnail slot="start">
-          <ion-img [src]="getIMGUrl(song.thumbnail || '') || 'assets/default-thumbnail.png'" alt="{{ song.title }}"></ion-img>
-        </ion-thumbnail>
-        <ion-label>
-          <ion-text color="light"><h3>{{ song.title }}</h3></ion-text>
-          <ion-text color="medium"><p>{{ song.artist }}</p></ion-text>
-        </ion-label>
-        <ion-button color="tertiary" fill="clear" [href]="song.filePath" download>
-          <ion-icon name="download-outline"></ion-icon>
-        </ion-button>
-        <app-add-in-playlist [songId]="song.id"></app-add-in-playlist>
-      </ion-item>
-    </ion-item-sliding>
+    <app-tracks-display [tracks]="songs"></app-tracks-display>
     <div style="height: 25vh"></div>
   </ion-list>
 </div>
 
-
-  <ion-item *ngIf="!isLoading && (!playlist?.songs || playlist.songs.length === 0)">
-    <ion-label>Aucun morceau dans cette playlist.</ion-label>
+@if(!isLoading && (!playlist?.songs?.length)){
+  <ion-item lines="none">
+    <ion-label>No tracks in the playlist</ion-label>
   </ion-item>
+}
+
 </ion-content>

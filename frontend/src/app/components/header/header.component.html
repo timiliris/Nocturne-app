@@ -8,10 +8,14 @@
         <ion-back-button color="primary" defaultHref="/"></ion-back-button>
       }
     </ion-buttons>
-    <ion-title color="medium" class="ion-text-center">{{title}}</ion-title>
-    @if(numberOfSongs){
-      <ion-card-subtitle class="ion-text-center">({{numberOfSongs}} tracks)</ion-card-subtitle>
-    }
+    <ion-title color="medium" class="ion-text-center">
+      {{title}}
+      @if(numberOfSongs){
+      <p>
+        <ion-text class="ion-hide-sm-down" >({{numberOfSongs}} tracks)</ion-text>
+      </p>
+      }
+    </ion-title>
 
   </ion-toolbar>
 </ion-header>
