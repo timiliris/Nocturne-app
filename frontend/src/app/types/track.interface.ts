@@ -4,7 +4,7 @@ export interface track {
   title: string;
   artist: string;
   youtubeUrl: string;
-  thumbnail?: string;
+  thumbnail: string;
   description?: string;
   createdAt: Date;
   filePath: string;

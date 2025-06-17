@@ -1,0 +1,96 @@
+/* Cercles concentriques */
+.ripple-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.ripple {
+  position: absolute;
+  border: 2px solid #00d4ff;
+  border-radius: 50%;
+  animation: rippleEffect 2s ease-out infinite;
+}
+
+.ripple:nth-child(1) { animation-delay: 0s; }
+.ripple:nth-child(2) { animation-delay: 0.5s; }
+.ripple:nth-child(3) { animation-delay: 1s; }
+.ripple:nth-child(4) { animation-delay: 1.5s; }
+
+@keyframes rippleEffect {
+  0% {
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 50%;
+    opacity: 1;
+  }
+  100% {
+    width: 100px;
+    height: 100px;
+    top: 0;
+    left: 0;
+    opacity: 0;
+  }
+}
+.siri-orb {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  animation: siriPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 40px rgba(102, 126, 234, 0.4);
+}
+
+.siri-orb::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  opacity: 0.3;
+  animation: siriRipple 2s ease-in-out infinite;
+  z-index: -1;
+}
+
+@keyframes siriPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes siriRipple {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.2); opacity: 0.1; }
+}
+
+.soundwave {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  height: 40px;
+}
+
+.wave-line {
+  width: 3px;
+  background: linear-gradient(to bottom, rgba(var(--ion-color-primary-rgb),0.7), rgba(var(--ion-color-primary-rgb),0.8), rgba(var(--ion-color-primary-rgb),0.7));
+  border-radius: 2px;
+  animation: waveMotion ease-in-out infinite alternate;
+}
+
+.wave-line:nth-child(1) { animation-duration: 1.5s; height: 10%}
+.wave-line:nth-child(2) { animation-duration: 1.7s; height: 20%}
+.wave-line:nth-child(3) { animation-duration: 1.6s; height: 35%}
+.wave-line:nth-child(4) { animation-duration: 1.8s; height: 25%}
+.wave-line:nth-child(5) { animation-duration: 1.9s; height: 40%}
+.wave-line:nth-child(6) { animation-duration: 1.7s; height: 30%}
+.wave-line:nth-child(7) { animation-duration: 1.6s; height: 15%}
+.wave-line:nth-child(8) { animation-duration: 1.8s; height: 25%}
+
+@keyframes waveMotion {
+  0% { transform: scaleY(0.5); opacity: 0.7; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
