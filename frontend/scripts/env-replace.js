@@ -1,18 +1,20 @@
 const fs = require('fs');
 const path = require('path');
-const dotenv = require('dotenv');
 
-dotenv.config(); // Charge le .env
+const outputPath = path.join(__dirname, '../src/environments/environment.prod.ts');
+let content = fs.readFileSync(outputPath, 'utf8');
 
-const envFile = path.join(__dirname, '../src/environments/environment.prod.ts');
-let content = fs.readFileSync(envFile, 'utf8');
+// Utilise process.env pour injecter les valeurs passées via Docker
+const replacements = {
+  API_URL: process.env.API_URL,
+  MEILI_URL: process.env.MEILI_URL,
+  MEILI_SEARCH_KEY: process.env.MEILI_SEARCH_KEY,
+};
 
-// Remplace les tokens dans le fichier par les vraies valeurs du .env
-Object.keys(process.env).forEach(key => {
-  const value = process.env[key];
+Object.entries(replacements).forEach(([key, value]) => {
   const regex = new RegExp(`%%${key}%%`, 'g');
-  content = content.replace(regex, value);
+  content = content.replace(regex, value || '');
 });
 
-fs.writeFileSync(envFile, content);
-console.log('✅ Environnement injecté avec succès dans environment.prod.ts');
+fs.writeFileSync(outputPath, content);
+console.log('✅ Environnement injecté dans environment.prod.ts');

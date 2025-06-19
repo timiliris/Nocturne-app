@@ -1,3 +1,5 @@
 window.ENV = {
-  API_URL: "${API_URL}"
+  API_URL: "${API_URL}",
+  MEILI_URL: "${MEILI_URL}",
+  MEILI_SEARCH_KEY: "${MEILI_SEARCH_KEY}",
 };
