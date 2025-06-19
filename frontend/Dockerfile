@@ -12,7 +12,13 @@ COPY . .
 
 # Remplacer les variables dans les fichiers si nécessaire (optionnel)
 ARG API_URL
+ARG MEILI_URL
+ARG MEILI_SEARCH_KEY
+
 ENV API_URL=${API_URL}
+ENV MEILI_URL=${MEILI_URL}
+ENV MEILI_SEARCH_KEY=${MEILI_SEARCH_KEY}
+
 RUN node scripts/env-replace.js || true
 
 # Build Angular/Ionic

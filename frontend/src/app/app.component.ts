@@ -24,7 +24,7 @@ import {PlaylistService} from "./services/playlist/playlist.service";
 import {LibraryService} from "./services/library/library.service";
 import {AuthService} from "./services/auth/auth.service";
 import {AsyncPipe} from "@angular/common";
-import {async} from "rxjs";
+import {MeiliService} from "./services/meili/meili.service";
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -36,6 +36,7 @@ export class AppComponent  implements OnInit {
   playlistService = inject(PlaylistService);
   libraryService = inject(LibraryService);
   authService = inject(AuthService);
+  meiliService = inject(MeiliService);
   router = inject(Router);
   public appPages = [
     { title: 'Library', url: '/home', icon: 'play' },
@@ -50,6 +51,9 @@ export class AppComponent  implements OnInit {
     this.libraryService.init();
     this.audioPlayer.init();
     this.playlistService.init();
+    this.meiliService.searchSongs('', 20).then(songs => {
+      console.log(songs);
+    })
   }
 
 
@@ -82,7 +86,7 @@ export class AppComponent  implements OnInit {
         }
       },
       error: (error) => {
-        console.log('Pas de session active');
+        console.log('Pas de session active', error);
 
       }
     });

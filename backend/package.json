@@ -16,6 +16,7 @@
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
+    "meilisearch": "^0.51.0",
     "uuid": "^9.0.1",
     "youtube-dl-exec": "^3.0.22",
     "ytdl-core": "^4.11.5"

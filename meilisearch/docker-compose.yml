@@ -4,11 +4,14 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
+        MEILI_NO_ANALYTICS: ${MEILI_NO_ANALYTICS}
+        MEILI_DASHBOARD: ${MEILI_DASHBOARD}
+        MEILI_ENV: ${MEILI_ENV}
         MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
     ports:
       - "7700:7700"
     environment:
-      MEILI_ENV: production
+      MEILI_ENV: development
       MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
     volumes:
       - meili_data:/meili_data

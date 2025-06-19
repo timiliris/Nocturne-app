@@ -8,10 +8,18 @@ const {requireAuth } = require("./middleware/auth");
 const cors = require("cors");
 const session = require("express-session");
 const bodyParser = require("body-parser");
+const syncPlaylistsAndSongs = require("./middleware/syncMeilisearchIndexes");
 const path = require("path");
 require("dotenv").config();
 const app = express();
-
+(async () => {
+    try {
+        await syncPlaylistsAndSongs();
+        console.log("✅ Synchronisation Meilisearch terminée");
+    } catch (error) {
+        console.error("❌ Erreur lors de la synchronisation Meilisearch:", error);
+    }
+})();
 app.use(cors({
     origin: process.env.CORS_ORIGINS?.split(','),
     credentials: process.env.CORS_CREDENTIALS === 'true',

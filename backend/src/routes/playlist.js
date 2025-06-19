@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const prisma = require("../../prisma/prismaClient");
-
+const { syncPlaylistCreate , addTrackToPlaylist, removeTrackFromPlaylist, syncPlaylistDelete } = require("../lib/meiliSync");
 const router = Router();
 
 function bigIntToString(obj) {
@@ -76,6 +76,11 @@ router.post("/", async (req, res) => {
                 },
             },
         });
+        try {
+            await syncPlaylistCreate(newPlaylist);
+        } catch (meiliError) {
+            console.warn("Meilisearch sync failed:", meiliError);
+        }
         res.status(201).json(bigIntToString(newPlaylist));
     } catch (error) {
         console.error(error);
@@ -128,6 +133,12 @@ router.delete("/:id", async (req, res) => {
             where: { id },
         });
 
+        try {
+            await syncPlaylistDelete(id);
+        }catch (error) {
+            console.warn("Meilisearch sync failed:", error);
+        }
+
         res.status(204).send();
     } catch (error) {
         console.error("Erreur lors de la suppression de la playlist :", error);
@@ -159,6 +170,12 @@ router.post("/:id/songs", async (req, res) => {
             });
         }
 
+        try{
+            await addTrackToPlaylist(playlistId, songId);
+        }catch (error) {
+            console.error("Error syncing playlist with Meilisearch:", error);
+        }
+
         // Create the link between playlist and song
         const newLink = await prisma.playlistSong.create({
             data: {
@@ -171,6 +188,45 @@ router.post("/:id/songs", async (req, res) => {
     } catch (error) {
         console.error("Error adding song to playlist:", error);
         res.status(500).json({ error: "Internal error while adding the song to the playlist." });
+    }
+});
+
+// DELETE /api/playlists/:id/songs/:songId - Supprimer une chanson d'une playlist
+router.delete("/:id/songs/:songId", async (req, res) => {
+    const playlistId = req.params.id;
+    const songId = req.params.songId;
+
+    try {
+        // Vérifie si le lien existe
+        const link = await prisma.playlistSong.findFirst({
+            where: {
+                playlistId,
+                songId,
+            },
+        });
+
+        if (!link) {
+            return res.status(404).json({ error: "Cette chanson n'est pas dans la playlist." });
+        }
+
+        // Supprime le lien
+        await prisma.playlistSong.delete({
+            where: {
+                id: link.id,
+            },
+        });
+
+        // Sync avec Meilisearch
+        try {
+            await removeTrackFromPlaylist(playlistId, songId);
+        } catch (meiliError) {
+            console.warn("Erreur de synchronisation Meilisearch :", meiliError);
+        }
+
+        res.status(204).send();
+    } catch (error) {
+        console.error("Erreur lors de la suppression de la chanson :", error);
+        res.status(500).json({ error: "Erreur interne lors de la suppression de la chanson." });
     }
 });
 

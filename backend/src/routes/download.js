@@ -5,7 +5,7 @@ const fs = require("fs");
 const { exec } = require("child_process");
 const https = require("https");
 const prisma = require("../../prisma/prismaClient");
-
+const { addTrackToLibrary } = require("../lib/meiliSync");
 const router = Router();
 
 function sanitizeBigInt(obj) {
@@ -106,6 +106,12 @@ router.post("/", async (req, res) => {
                 duration
             },
         });
+
+        try{
+            await addTrackToLibrary(sanitizeBigInt(song));
+        }catch (err){
+            console.warn("Failed to sync with Meilisearch:", err);
+        }
 
         res.json({ message: "Download complete", song: sanitizeBigInt(song) });
     } catch (dbError) {

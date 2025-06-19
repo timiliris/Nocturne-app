@@ -5,6 +5,8 @@
 export const environment = {
   production: false,
   apiUrl: 'http://192.168.129.30:3000', // URL de l'API en développement
+  meilisearchUrl: 'http://127.0.0.1:7700', // URL de Meilisearch en développement
+  meilisearchApiKey: '6421204843cd99fdfdedc8d125167d91a3988ba29464c75e929233575be6c6cb'
 };
 
 /*

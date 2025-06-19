@@ -3,13 +3,18 @@ services:
     build:
       context: ./meilisearch
       args:
+        MEILI_ENV: ${MEILI_ENV}
         MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
+        MEILI_NO_ANALYTICS: ${MEILI_NO_ANALYTICS}
+        MEILI_DASHBOARD: ${MEILI_DASHBOARD}
+    environment:
+      MEILI_NO_ANALYTICS: ${MEILI_NO_ANALYTICS}
+      MEILI_DASHBOARD: ${MEILI_DASHBOARD}
+      MEILI_ENV: ${MEILI_ENV}
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
     container_name: nocturne-meilisearch
     ports:
       - "7700:7700"
-    environment:
-      MEILI_ENV: production
-      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
     volumes:
       - meili_data:/meili_data
       - ./.env:/app/.env
@@ -34,7 +39,6 @@ services:
         GLOBAL_USERNAME: ${GLOBAL_USERNAME}
         GLOBAL_PASSWORD: ${GLOBAL_PASSWORD}
         FRONTEND_URL: ${FRONTEND_URL}
-
         API_HOST: ${API_HOST}
         API_PORT: ${API_PORT}
         MEILISEARCH_HOST: ${MEILI_HOST}
@@ -76,11 +80,11 @@ services:
       context: ./frontend
       args:
         API_URL: ${API_URL}
-        MEILI_HOST: ${MEILI_HOST}
+        MEILI_URL: ${MEILI_URL}
         MEILI_SEARCH_KEY: ${MEILI_SEARCH_KEY}
     environment:
       API_URL: ${API_URL}
-      MEILI_HOST: ${MEILI_HOST}
+      MEILI_URL: ${MEILI_URL}
       MEILI_SEARCH_KEY: ${MEILI_SEARCH_KEY}
     ports:
       - "4200:8100"

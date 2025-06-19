@@ -2,6 +2,7 @@ const { Router } = require("express");
 const prisma = require("../../prisma/prismaClient");
 const fs = require("fs");
 const path = require("path");
+const { deleteTrackFromLibrary , deleteDocumentFromAllIndexes} = require("../lib/meiliSync");
 
 const router = Router();
 function sanitizeBigInt(obj) {
@@ -106,6 +107,12 @@ router.delete("/:id", async (req, res) => {
         await prisma.song.delete({
             where: { id: songId },
         });
+
+        try{
+            await deleteDocumentFromAllIndexes(songId)
+        }catch (error) {
+            console.error("Erreur lors de la suppression de la chanson de la bibliothèque Meilisearch", error);
+        }
 
         res.status(204).send();
     } catch (error) {
