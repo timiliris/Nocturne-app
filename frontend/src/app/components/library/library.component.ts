@@ -3,7 +3,7 @@ import {track} from "../../types/track.interface";
 import {Component, inject, OnInit} from "@angular/core";
 import {ApiService} from "../../services/api.service";
 import {IonSearchbar} from "@ionic/angular/standalone";
-import {IonList, IonText} from "@ionic/angular/standalone";
+import {IonText} from "@ionic/angular/standalone";
 import {NgIf} from "@angular/common";
 import {LibraryService} from "../../services/library/library.service";
 import {FormsModule} from "@angular/forms";
@@ -12,13 +12,13 @@ import {TracksDisplayComponent} from "../tracks-display/tracks-display.component
 @Component({
   selector: 'app-library',
   imports: [
-    IonList,
     NgIf,
     IonText,
     IonSearchbar,
     FormsModule,
     TracksDisplayComponent,
   ],
+  standalone: true,
   templateUrl: './library.component.html',
   styleUrls: ['./library.component.css'] // <-- correction ici
 })

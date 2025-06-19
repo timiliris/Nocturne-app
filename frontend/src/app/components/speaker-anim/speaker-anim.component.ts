@@ -3,6 +3,7 @@ import {Component, Input} from '@angular/core';
 @Component({
   selector: 'app-speaker-anim',
   imports: [],
+  standalone: true,
   templateUrl: './speaker-anim.component.html',
   styleUrl: './speaker-anim.component.css'
 })

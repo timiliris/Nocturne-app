@@ -15,6 +15,7 @@ const app = express();
 app.use(cors({
     origin: [
         process.env.FRONTEND_URL,
+        'http://localhost:4200',
         'http://192.168.129.30:4200',
         'chrome-extension://*',
         'https://www.youtube.com',

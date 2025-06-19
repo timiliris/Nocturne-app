@@ -1,15 +1,9 @@
-<div style="max-height: 90%; overflow-y: scroll">
+
   <ion-searchbar
     [(ngModel)]="searchTerm"
     debounce="300"
     placeholder="Search songs"
     (ionInput)="filterSongs()"
   ></ion-searchbar>
-
-  <ion-list *ngIf="filteredSongs.length">
     <app-tracks-display [tracks]="filteredSongs"></app-tracks-display>
-    <div style="height: 25vh"></div>
-  </ion-list>
-
   <ion-text *ngIf="!filteredSongs.length">No songs available.</ion-text>
-</div>

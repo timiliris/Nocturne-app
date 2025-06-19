@@ -27,9 +27,9 @@ import {LibraryService} from "../../services/library/library.service";
 import {AudioPlayerService} from "../../services/audio-player/audio-player.service";
 import {OverlayEventDetail} from "@ionic/core/components";
 import {FormsModule} from "@angular/forms";
-import {SpeakerAnimComponent} from "../speaker-anim/speaker-anim.component";
 import {AddInPlaylistComponent} from "../playlist/add-in-playlist/add-in-playlist.component";
 import {NgForOf, NgIf} from "@angular/common";
+import {SpeakerAnimComponent} from "../speaker-anim/speaker-anim.component";
 
 @Component({
   selector: 'app-tracks-display',
@@ -52,13 +52,14 @@ import {NgForOf, NgIf} from "@angular/common";
     IonToolbar,
     IonList,
     FormsModule,
-    SpeakerAnimComponent,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     NgForOf,
     NgIf,
+    SpeakerAnimComponent,
   ],
   templateUrl: './tracks-display.component.html',
+  standalone: true,
   styleUrl: './tracks-display.component.css'
 })
 export class TracksDisplayComponent implements OnChanges {
@@ -80,7 +81,7 @@ export class TracksDisplayComponent implements OnChanges {
 
   // Pagination pour infinite scroll côté client
   displayedTracks: track[] = [];
-  pageSize = 20;
+  pageSize = 10;
   currentPage = 0;
   allLoaded = false;
 
