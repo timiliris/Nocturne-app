@@ -13,26 +13,19 @@ require("dotenv").config();
 const app = express();
 
 app.use(cors({
-    origin: [
-        process.env.FRONTEND_URL,
-        'http://localhost:4200',
-        'http://192.168.129.30:4200',
-        'chrome-extension://*',
-        'https://www.youtube.com',
-        'https://youtube.com'
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+    origin: process.env.CORS_ORIGINS?.split(','),
+    credentials: process.env.CORS_CREDENTIALS === 'true',
+    methods: process.env.CORS_METHODS?.split(',') || ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 app.use(bodyParser.json());
 app.use(session({
-    secret: process.env.SESSION_SECRET || "dev-secret-key",
+    secret: process.env.SESSION_SECRET || 'dev-secret',
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: false, // passe à true si HTTPS
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000 // 1 jour
+        secure: process.env.SESSION_SECURE === 'true',
+        httpOnly: process.env.SESSION_HTTP_ONLY !== 'false',
+        maxAge: parseInt(process.env.SESSION_MAX_AGE) || 24 * 60 * 60 * 1000
     }
 }));
 // Serve static downloads folder for MP3 files
