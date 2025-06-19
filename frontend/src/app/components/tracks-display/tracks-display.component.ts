@@ -81,7 +81,7 @@ export class TracksDisplayComponent implements OnChanges {
 
   // Pagination pour infinite scroll côté client
   displayedTracks: track[] = [];
-  pageSize = 10;
+  pageSize = 20;
   currentPage = 0;
   allLoaded = false;
 
