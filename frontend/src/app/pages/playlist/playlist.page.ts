@@ -17,6 +17,9 @@ import {ApiService} from "../../services/api.service";
 import {HeaderComponent} from "../../components/header/header.component";
 import {Playlist} from "../../types/playlist.interface";
 import {TracksDisplayComponent} from "../../components/tracks-display/tracks-display.component";
+import {
+  AllPlaylistDisplayComponent
+} from "../../components/playlist/all-playlist-display/all-playlist-display.component";
 @Component({
   selector: 'app-playlist',
   templateUrl: './playlist.page.html',
@@ -34,7 +37,8 @@ import {TracksDisplayComponent} from "../../components/tracks-display/tracks-dis
     IonFab,
     HeaderComponent,
     TracksDisplayComponent,
-    IonSpinner
+    IonSpinner,
+    AllPlaylistDisplayComponent
   ]
 })
 export class PlaylistPage implements OnInit {

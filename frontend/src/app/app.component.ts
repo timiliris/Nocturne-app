@@ -40,7 +40,9 @@ export class AppComponent  implements OnInit {
   router = inject(Router);
   public appPages = [
     { title: 'Library', url: '/home', icon: 'play' },
+    { title: 'Playlists', url: '/playlists/all', icon: 'list' },
     { title: 'Download', url: '/download', icon: 'download' },
+    { title: 'Settings', url: '/settings', icon: 'cog' },
   ];
   constructor() {
     addIcons(allIcons)

@@ -6,10 +6,11 @@
     "start": "concurrently --names \"🔎 MEILI,🐘 DB,🧠 BACKEND,🎨 FRONTEND\" --prefix-colors \"yellow,magenta,cyan,green\" \"npm run meili\" \"npm run db\" \"npm run backend\" \"npm run frontend\"",
     "db": "cd PostgreSQL && docker compose up",
     "meili": "cd MeiliSearch && docker compose up",
-    "backend": "cd backend && npm start",
+    "backend": "wait-on tcp:0.0.0.0:7700 && cd backend && npm start",
     "frontend": "cd frontend && ng serve --host=0.0.0.0"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "wait-on": "^8.0.3"
   }
 }

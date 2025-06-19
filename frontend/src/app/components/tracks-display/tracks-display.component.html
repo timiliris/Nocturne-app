@@ -1,38 +1,41 @@
-<ion-list>
-  <ion-item-sliding *ngFor="let song of displayedTracks; trackBy: trackById">
-    <ion-item-options side="end">
-      <ion-item-option color="primary" (click)="openPlaylistModal(song)">
-        <ion-icon slot="start" size="large" name="cog"></ion-icon>
-        <div>Settings</div>
-      </ion-item-option>
-    </ion-item-options>
+@if(displayedTracks.length > 0){
+  <ion-list>
+    <ion-item-sliding *ngFor="let song of displayedTracks; trackBy: trackById">
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="openPlaylistModal(song)">
+          <ion-icon slot="start" size="large" name="cog"></ion-icon>
+          <div>Settings</div>
+        </ion-item-option>
+      </ion-item-options>
 
-    <ion-item
-      lines="none"
-      button
-      (click)="playTrack(song)"
-      [class.playing]="currentSong?.id === song.id"
-    >
-      <ion-thumbnail slot="start">
-        <ion-img
-          [src]="audioService.getIMGUrl(song.thumbnail || '')"
-          [alt]="song.title"
-        ></ion-img>
-      </ion-thumbnail>
+      <ion-item
+        lines="none"
+        button
+        (click)="playTrack(song)"
+        [class.playing]="currentSong?.id === song.id"
+      >
+        <ion-thumbnail slot="start">
+          <ion-img
+            [src]="audioService.getIMGUrl(song.thumbnail || '')"
+            [alt]="song.title"
+          ></ion-img>
+        </ion-thumbnail>
 
-      <ion-label>
-        <ion-text color="light">
-          <h3>{{ song.title }}</h3>
-        </ion-text>
-        <ion-text color="medium">
-          <p>{{ song.artist }}</p>
-        </ion-text>
-      </ion-label>
+        <ion-label>
+          <ion-text color="light">
+            <h3>{{ song.title }}</h3>
+          </ion-text>
+          <ion-text color="medium">
+            <p>{{ song.artist }}</p>
+          </ion-text>
+        </ion-label>
 
-      <app-speaker-anim *ngIf="audioService.getCurrentTrack()?.id === song.id" slot="end"></app-speaker-anim>
-    </ion-item>
-  </ion-item-sliding>
-</ion-list>
+        <app-speaker-anim *ngIf="audioService.getCurrentTrack()?.id === song.id" slot="end"></app-speaker-anim>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+}
+
 
 <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)" [disabled]="allLoaded">
   <ion-infinite-scroll-content

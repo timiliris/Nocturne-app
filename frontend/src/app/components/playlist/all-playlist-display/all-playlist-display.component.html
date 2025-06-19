@@ -1,0 +1,28 @@
+@for(playlist of playlists; track playlist.id){
+  <ion-list style="overflow-y: scroll; max-height: 40%" *ngIf="!isLoading && playlistService.playlists.length > 0">
+    <ion-item-sliding *ngFor="let playlist of playlistService.playlists">
+      <ion-item-options>
+        <ion-item-option color="danger" (click)="playlistService.deletePlaylist(playlist.id)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+      <ion-item  lines="none" (click)="playlistService.goToPlaylist(playlist.id)">
+        <ion-chip
+          style="width: 100%"
+          [style.background-color]="playlistService.getRgbaColor(playlist.color, 0.15)"
+          [style.border]="playlistService.getBorderStyle(playlist.color, 0.5)"
+          color="light"
+        >
+          <ion-label [style.color]="playlistService.getRgbaColor(playlist.color, 1)" > <b> {{ playlist.name }} </b> </ion-label>
+          <ion-badge
+            style="position: absolute; right: 0; margin-right: 10px;"
+            [style.background-color]="playlistService.getRgbaColor(playlist.color, 0.5)"
+            [style.border]="playlistService.getBorderStyle(playlist.color, 1)">
+            {{playlist.songs.length}}
+          </ion-badge>
+        </ion-chip>
+      </ion-item>
+    </ion-item-sliding>
+
+  </ion-list>
+}

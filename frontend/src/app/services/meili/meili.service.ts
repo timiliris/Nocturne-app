@@ -24,6 +24,13 @@ export class MeiliService {
     return await index.search(query, { limit });
   }
 
+  // 🎶 Load playlists
+  async getAllPlaylists(): Promise<any[]> {
+    const index = this.client.index('playlists');
+    const response = await index.getDocuments();
+    return response.results || [];
+  }
+
   // 🎵 Récupérer une chanson par ID
   async getSongById(id: string) {
     const index = this.client.index('track_library');

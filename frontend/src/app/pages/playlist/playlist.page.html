@@ -1,26 +1,31 @@
-<app-header [title]="playlist?.name || 'Playlist'" [numberOfSongs]="playlist?.songs?.length" [showBackButton]="true" ></app-header>
+<app-header [title]="playlist?.name || 'Playlist'" [showBackButton]="true" [numberOfSongs]="playlist?.songs?.length || 0"></app-header>
 <ion-content fullscreen="true" >
+
+@if(playlistId === 'all'){
+
+<app-all-playlist-display></app-all-playlist-display>
+
+} @else {
+
   <ion-fab vertical="top" horizontal="end" slot="fixed" [edge]="true">
     <ion-fab-button size="small" (click)="playPlaylist()">
       <ion-icon name="play"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-@if(isLoading){
-  <ion-item lines="none">
-    <ion-label>Loading  <ion-spinner></ion-spinner>  </ion-label>
-  </ion-item>
-}
-<div style="max-height: 90%; overflow-y: scroll">
-  <ion-list *ngIf="playlist?.songs?.length">
-    <app-tracks-display [tracks]="songs"></app-tracks-display>
-    <div style="height: 25vh"></div>
-  </ion-list>
-</div>
+  @if(isLoading){
+    <ion-item lines="none">
+      <ion-label>Loading  <ion-spinner></ion-spinner>  </ion-label>
+    </ion-item>
+  }
 
-@if(!isLoading && (!playlist?.songs?.length)){
-  <ion-item lines="none">
-    <ion-label>No tracks in the playlist</ion-label>
-  </ion-item>
+  <app-tracks-display [tracks]="songs"></app-tracks-display>
+
+  @if(!isLoading && (!playlist?.songs?.length)){
+    <ion-item lines="none">
+      <ion-label>No tracks in the playlist</ion-label>
+    </ion-item>
+  }
+
 }
 
 </ion-content>

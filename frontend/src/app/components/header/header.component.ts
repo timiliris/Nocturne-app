@@ -26,7 +26,7 @@ import {
 export class HeaderComponent {
 
   @Input() title: string = 'Default Title';
-  @Input() numberOfSongs?: number;
+  @Input() numberOfSongs!: number;
   @Input() showBackButton: boolean = false;
 
 }
