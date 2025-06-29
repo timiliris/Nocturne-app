@@ -9,6 +9,18 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-blue.svg)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Docker-Compose-blue.svg)](https://docs.docker.com/compose/)
 
+
+```
+ ██████   █████    ███████      █████████  ███████████ █████  █████ ███████████   ██████████      █████████   ███████████  ███████████ 
+░░██████ ░░███   ███░░░░░███   ███░░░░░███░█░░░███░░░█░░███  ░░███ ░░███░░░░░███ ░░███░░░░░█     ███░░░░░███ ░░███░░░░░███░░███░░░░░███
+ ░███░███ ░███  ███     ░░███ ███     ░░░ ░   ░███  ░  ░███   ░███  ░███    ░███  ░███  █ ░     ░███    ░███  ░███    ░███ ░███    ░███
+ ░███░░███░███ ░███      ░███░███             ░███     ░███   ░███  ░██████████   ░██████       ░███████████  ░██████████  ░██████████ 
+ ░███ ░░██████ ░███      ░███░███             ░███     ░███   ░███  ░███░░░░░███  ░███░░█       ░███░░░░░███  ░███░░░░░░   ░███░░░░░░  
+ ░███  ░░█████ ░░███     ███ ░░███     ███    ░███     ░███   ░███  ░███    ░███  ░███ ░   █    ░███    ░███  ░███         ░███        
+ █████  ░░█████ ░░░███████░   ░░█████████     █████    ░░████████   █████   █████ ██████████    █████   █████ █████        █████       
+░░░░░    ░░░░░    ░░░░░░░      ░░░░░░░░░     ░░░░░      ░░░░░░░░   ░░░░░   ░░░░░ ░░░░░░░░░░    ░░░░░   ░░░░░ ░░░░░        ░░░░░        
+
+```
 > Your personal music streaming platform - Download, organize, and enjoy your music library anywhere.
 
 Nocturne is a self-hosted music streaming application that lets you build and manage your personal music library by downloading royalty-free songs from YouTube. Think of it as your own private Spotify, but with full ownership of your music collection and complete control over your listening experience.

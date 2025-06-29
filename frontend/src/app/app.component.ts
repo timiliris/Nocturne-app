@@ -29,6 +29,7 @@ import {MeiliService} from "./services/meili/meili.service";
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
+  standalone: true,
   imports: [RouterLink, RouterLinkActive, IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonMenuToggle, IonItem, IonIcon, IonRouterLink, IonRouterOutlet, AudioPlayerComponent, PlaylistInMenuComponent, IonCardTitle, IonBadge, IonChip, AsyncPipe],
 })
 export class AppComponent  implements OnInit {
